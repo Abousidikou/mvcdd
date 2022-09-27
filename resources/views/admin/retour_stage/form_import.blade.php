@@ -81,11 +81,6 @@
 
                             Toutes les donnees n'ont pu etre sauvegarde<br>
 
-                            Veuillez voir ci-joint le fichier contenant les lignes non enregistrees<br>
-                            Veillez vérifier que l'agent existe déjà
-                            <br>
-                            L'agent est peut être déjà en stage
-
                         </div>
 
                     @elseif(session('nomenclatureError'))

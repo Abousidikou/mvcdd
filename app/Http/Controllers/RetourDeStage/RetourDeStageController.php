@@ -335,6 +335,7 @@ class RetourDeStageController extends Controller
                 }
                 if(!$this->agentExist($currentMatricule))
                 {
+                    dd($currentMatricule);
                     $errormsg = "l'Agent n'existe pas.";
                     $linesWithError[] = $i;
                 }
@@ -393,7 +394,7 @@ class RetourDeStageController extends Controller
         {
             return false;
         }
-        return false;
+        return true;
     }
 
     public function copyRowsFromArray($rows, Spreadsheet $oldSpreadSheet)
