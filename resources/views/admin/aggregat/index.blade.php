@@ -160,13 +160,12 @@
 
             </div>
             @if (session('path'))
-                <div class="card">
+                <div class="card" style="text-align: center ;">
                     <div class="body">
-                        <label class="form-label">Telecharger le fichier :   </label><small style="text-align:center;">
                             @php
                                 $path = session('path');
                             @endphp
-                            <a href="{{url($path)}}" class="btn btn-secondary waves-effect" >Télécharger le fichier</a>
+                            <a href="{{url($path)}}" class="btn btn-secondary waves-effect" >Telecharger le fichier</a>
                         </small>
                     </div>
                 </div>
