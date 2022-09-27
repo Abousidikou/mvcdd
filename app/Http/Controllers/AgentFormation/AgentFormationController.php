@@ -80,9 +80,10 @@ class AgentFormationController extends Controller
         ];
  
         $validator = Validator::make($request->all(), $rules);
-        if($validator->fails())
+        $agenExist = $this->agentExist($request->matricule);
+        if($validator->fails() ||  $agenExist == true)
         {
-            return redirect()->back()->with('validation','error');
+            return redirect()->back()->with('validation','Ecrvez le nom et assurez vous que l\'agents n\'existe pas déjà');
         }
         else
         {

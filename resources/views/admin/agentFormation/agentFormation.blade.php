@@ -128,7 +128,7 @@
 
                     @if(Auth::user()->role == "admin" || Auth::user()->role == "agents_m" )
                         <caption style="caption-side: top; text-align:center" title="Cliquer pour ajouter un nouvel agent">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Générer les agrrégats</button>    
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Générer les agrégats</button>    
                             <a href="{{route('agentFormation.form')}}" class="btn bg-green waves-effect">Ajouter des agents</a>
                             <a href="{{route('agentFormation.formimport')}}" class="btn bg-green waves-effect">Importer un fichier</a>
                             <a href="{{ route('agentFormation.exporter') }}" class="btn bg-green waves-effect">Exporter</a>

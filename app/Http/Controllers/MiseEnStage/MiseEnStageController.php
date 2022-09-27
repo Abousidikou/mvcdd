@@ -60,9 +60,9 @@ class MiseEnStageController extends Controller
         }else{
             $isBoursier = false;
         }
-        $valid = MiseEnStage::where('id_agent',$request->id_agent)->first();
+        
         $validator = Validator::make($request->all(), $rules);
-        if($validator->fails() || $valid != null)
+        if($validator->fails())
         {
             return redirect()->back()->with('validation','error');
         }

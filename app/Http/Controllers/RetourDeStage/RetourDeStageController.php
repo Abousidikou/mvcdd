@@ -59,8 +59,7 @@ class RetourDeStageController extends Controller
         else
         {
             $isagent = AgentFormation::where('id',$request->id_agent)->first();
-            $ismise = MiseEnStage::where('id_agent',$request->id_agent)->first();
-            if($isagent == null || $ismise == null)
+            if($isagent == null)
             {
                 return redirect()->back()->with('agents_not_exist','error');
             }

@@ -264,18 +264,18 @@
                     @elseif(Auth::user()->role=="agents_m")
                         <a href="{{route('agentFormation.data')}}" class="list-group-item">
                             <p class="list-group-item-text">
-                                GESTION DES AGENTS EN FORMATION
+                                GESTION DES AGENTS EN STAGE
                             </p>
                         </a>
                         <a href="{{route('miseEnStage.data')}}" class="list-group-item">
                             <p class="list-group-item-text">
-                                GESTION DES MISES EN FORMATION
+                                GESTION DES MISES EN STAGE
                             </p>
                         </a>
 
                         <a href="{{route('retourDeStage.data')}}" class="list-group-item">
                             <p class="list-group-item-text">
-                                GESTION DES RETOURS DE FORMATION
+                                GESTION DES RETOURS DE STAGE
                             </p>
                         </a>
 
