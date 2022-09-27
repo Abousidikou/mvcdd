@@ -281,7 +281,7 @@
 
                         <a href="{{route('aggregat.index')}}" class="list-group-item">
                             <p class="list-group-item-text">
-                                EXPORTER LES AGGREGATS
+                                EXPORTER LES AGREGATS
                             </p>
                         </a>
 
