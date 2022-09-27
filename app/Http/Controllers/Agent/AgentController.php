@@ -172,7 +172,7 @@ class AgentController extends Controller
             $updateArray["id_structure"] = $structure;
             $updateArray["role"] = $role;
 
-            $agentIsUpdated = User::find($id)->update($updateArray);
+            $agentIsUpdated = User::find($request->id)->update($updateArray);
             if($agentIsUpdated)
             {
                 return redirect()->back()->with('success','success');

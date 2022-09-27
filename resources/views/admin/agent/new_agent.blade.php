@@ -112,9 +112,9 @@
                         <div class="form-line">
                             <label class="form-label" >Role</label><br>
                             <select name="role" id="role" class="form-control show-tick" required>
-                                    <option value="see_stats" selected>Voir les stats</option>
-                                    <option value="admin" >Administrateurs</option>
-                                    <option value="agents_m">Agents Manage</option>
+                                    <option value="see_stats" selected>Utilisateur simple</option>
+                                    <option value="admin" >Administrateur</option>
+                                    <option value="agents_m">Gérant des Agents</option>
                             </select>
 
                             

@@ -104,21 +104,21 @@
 
                             <select name="role" id="role" class="form-control show-tick">
                                 @if($agent->role == "admin")
-                                    <option value="admin" selected>Administrateurs</option>
-                                    <option value="see_stats">Voir les stats</option>
-                                    <option value="agents_m">Agents Manage</option>
+                                    <option value="admin" selected>Administrateur</option>
+                                    <option value="see_stats">Utilisateur simple</option>
+                                    <option value="agents_m">Gérant des Agents</option>
                                 @elseif($agent->role == "see_stats")
-                                    <option value="admin" >Administrateurs</option>
-                                    <option value="see_stats" selected>Voir les stats</option>
-                                    <option value="agents_m">Agents Manage</option>
+                                    <option value="admin" >Administrateur</option>
+                                    <option value="see_stats" selected>Utilisateur simple</option>
+                                    <option value="agents_m">Gérant des Agents</option>
                                 @elseif($agent->role == "agents_m")
-                                    <option value="admin" >Administrateurs</option>
-                                    <option value="see_stats" >Voir les stats</option>
-                                    <option value="agents_m" selected>Agents Manage</option>
+                                    <option value="admin" >Administrateur</option>
+                                    <option value="see_stats" >Utilisateur simple</option>
+                                    <option value="agents_m" selected>Gérant des Agents</option>
                                 @else
-                                    <option value="admin" >Administrateurs</option>
-                                    <option value="see_stats" selected>Voir les stats</option>
-                                    <option value="agents_m">Agents Manage</option>
+                                    <option value="admin" >Administrateur</option>
+                                    <option value="see_stats" selected>Utilisateur simple</option>
+                                    <option value="agents_m">Gérant des Agents</option>
                                 @endif
                             </select>
 
