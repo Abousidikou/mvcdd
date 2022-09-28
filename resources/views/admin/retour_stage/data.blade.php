@@ -35,8 +35,8 @@
                         <tr>
                             <th>Matricule</th>
                             <th>Nom & prenoms</th>
-                            <th>Date de fin de formation</th>
-                            <th>Date de signature de retour</th>
+                            <th>Catégorie RS</th>
+                            <th>Année RS</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -45,8 +45,8 @@
                         <tr>
                             <td>{{$r_s->agent->matricule ?? ''}}</td>
                             <td>{{$r_s->agent->nom_prenoms ?? ''}}</td>
-                            <td>{{$r_s->date_fin_formation ?? ''}}</td>
-                            <td>{{$r_s->date_signature ?? ''}}</td>
+                            <td>{{$r_s->categorie_rs ?? ''}}</td>
+                            <td>{{$r_s->annee_rs ?? ''}}</td>
                             @if(Auth::user()->role == "admin" || Auth::user()->role == "agents_m")
                                 <td>
                                     <div style="display: flex">
