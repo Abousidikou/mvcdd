@@ -173,7 +173,7 @@
 
                     <button class="btn btn-primary waves-effect" type="submit">VALIDER</button>
 
-                    <a class="btn btn-warning waves-effect" href="{{route('agents')}}">Liste des agents</a>
+                    <a class="btn btn-warning waves-effect" href="{{route('agents')}}">Liste des utilisateurs</a>
 
                 </form>
 

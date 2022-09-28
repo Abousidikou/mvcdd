@@ -125,7 +125,7 @@
 
                         <button class="btn btn-primary waves-effect" type="submit">IMPORTER</button>
 
-                        <a href="{{ route('retourDeStage.data') }}" class="btn btn-warning waves-effect">Liste des mise en stages</a>
+                        <a href="{{ route('retourDeStage.data') }}" class="btn btn-warning waves-effect">Liste des retours de stages</a>
 
                         @if(session('examplaire'))
                             @php
