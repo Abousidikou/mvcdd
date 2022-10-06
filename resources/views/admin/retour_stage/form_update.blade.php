@@ -80,7 +80,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" value="{{ $retour_stage->numero_decision_rs ?? ''}}" name="numero_decision_rs" required>
-                                    <label class="form-label">Numéro de decision de retour en stage</label>
+                                    <label class="form-label">Numéro de référence</label>
                                 </div>
                                 <div class="help-info"></div>
                             </div>

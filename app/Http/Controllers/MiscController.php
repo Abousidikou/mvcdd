@@ -105,24 +105,28 @@ class MiscController extends Controller
             $i = 0; 
             foreach($indicators as $indicator)
             {
-                $i++;
-                if($i == 1 && ($active_indicator == $indicator->id))
-                {
-                    $builtSUI .= "<ul class='ml-menu'><li class='indicators active' id='i$indicator->id'><a href=".url('/read/'.$indicator->id.'/'.$subdomain->id)."><i class='material-icons'>layers</i><span>$indicator->wording</span></a></li>";
-                    continue;
-                }
-                else if($i == 1)
-                {
-                    $builtSUI .= "<ul class='ml-menu'><li class='indicators' id='i$indicator->id'><a href=".url('/read/'.$indicator->id.'/'.$subdomain->id)."><i class='material-icons'>layers</i><span>$indicator->wording</span></a></li>";
-                    continue;
-                }
-                else if($i != 1 && ($active_indicator == $indicator->id))
-                {
-                    $builtSUI .= "<li class='indicators active' id='i$indicator->id'><a href=".url('/read/'.$indicator->id.'/'.$subdomain->id)."><i class='material-icons'>layers</i><span>$indicator->wording</span></a></li>";                    
-                }
-                else
-                {
-                    $builtSUI .= "<li class='indicators' id='i$indicator->id'><a href=".url('/read/'.$indicator->id.'/'.$subdomain->id)."><i class='material-icons'>layers</i><span>$indicator->wording</span></a></li>";
+                //dd($indicator);
+                $isDataExist = Data::where('id_indicator',$indicator->id)->first();
+                if($isDataExist != null){
+                    $i++;
+                    if($i == 1 && ($active_indicator == $indicator->id))
+                    {
+                        $builtSUI .= "<ul class='ml-menu'><li class='indicators active' id='i$indicator->id'><a href=".url('/read/'.$indicator->id.'/'.$subdomain->id)."><i class='material-icons'>layers</i><span>$indicator->wording</span></a></li>";
+                        continue;
+                    }
+                    else if($i == 1)
+                    {
+                        $builtSUI .= "<ul class='ml-menu'><li class='indicators' id='i$indicator->id'><a href=".url('/read/'.$indicator->id.'/'.$subdomain->id)."><i class='material-icons'>layers</i><span>$indicator->wording</span></a></li>";
+                        continue;
+                    }
+                    else if($i != 1 && ($active_indicator == $indicator->id))
+                    {
+                        $builtSUI .= "<li class='indicators active' id='i$indicator->id'><a href=".url('/read/'.$indicator->id.'/'.$subdomain->id)."><i class='material-icons'>layers</i><span>$indicator->wording</span></a></li>";                    
+                    }
+                    else
+                    {
+                        $builtSUI .= "<li class='indicators' id='i$indicator->id'><a href=".url('/read/'.$indicator->id.'/'.$subdomain->id)."><i class='material-icons'>layers</i><span>$indicator->wording</span></a></li>";
+                    }
                 }
 
             }

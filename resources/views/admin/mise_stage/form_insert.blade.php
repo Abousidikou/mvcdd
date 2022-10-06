@@ -51,7 +51,8 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         Erreur de validation... ou<br> 
                         Spécifier l'agent... ou<br>
-                        L'agent existe déjà.
+                        L'agent n'est peut-être pas mise en stage. <br>
+                        Veillez vérifier et rééssayer.
                     </div>
                     @elseif(session('agents_not_exist'))
                     <div class="alert bg-danger alert-dismissible" role="alert">
@@ -68,7 +69,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <label>Agents</label><br>
-                                    <select name="id_agent" class="selectpicker form-control show-tick" data-live-search="true">
+                                    <select name="id_agent" class="selectpicker form-control show-tick" id="agentselected" data-live-search="true" onChange="changeBox2();">
                                         @foreach($agents as $agent)
                                             <option value="{{ $agent->id }}" style="background:#919c9e; color: #fff;">{{ $agent->nom_prenoms }}</option>
                                         @endforeach
@@ -80,7 +81,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="numero_decision_ms" required>
-                                    <label class="form-label">Numéro de decision de mise en stage</label>
+                                    <label class="form-label">Numéro de référence</label>
                                 </div>
                                 <div class="help-info"></div>
                             </div>
@@ -95,7 +96,7 @@
 
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input class="form-check-input" type="checkbox" name="isBoursier" id="flexCheckChecked" checked>
+                                    <input class="form-check-input" type="checkbox" name="isBoursier" id="flexCheckChecked" onclick="validate()" checked>
                                     <label class="form-check-label" for="flexCheckChecked">
                                         Boursier 
                                     </label>
@@ -105,8 +106,15 @@
 
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="nature_bourse" >
+                                    <input type="text" class="form-control" name="nature_bourse" id="nature">
                                     <label class="form-label">Nature de la bourse</label>
+                                </div>
+                                <div class="help-info"></div>
+                            </div>
+
+                            <div class="form-group form-float">
+                                <div class="form-line" id="plans">
+                                    <label >Plan de formation de l'agent</label><br>
                                 </div>
                                 <div class="help-info"></div>
                             </div>
@@ -270,6 +278,10 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 <script type="text/javascript">
+    var sYear = 0;
+    var eYear = 0;
+    
+
       $( function() {
         $( "#date_signature" ).datepicker({
             dateFormat: "mm/dd/yy",
@@ -281,10 +293,43 @@
         $( function() {
         $( "#date_demarrage_stage" ).datepicker({
             dateFormat: "mm/dd/yy",
-            //minDate: 0, 
-            //maxDate: "+12M +10D"
+            //minDate: sYear, 
+            //maxDate: eYear
         });
       } );
+
+      document.getElementById('date_demarrage_stage').value = "";
+      function planChaned(){
+         document.getElementById('date_demarrage_stage').value = "";
+      }
+
+    function changeBox2(){
+        if(!!document.getElementById('plan_formations') == false){
+            alert("Sélectionner un agent puis un plan de formation !!!");
+            document.getElementById('date_demarrage_stage').value = "";
+        }else{
+            if(document.getElementById('plan_formations').value == ""){
+                document.getElementById('date_demarrage_stage').value = "";
+            }
+        }
+    }
+
+    $( "#date_demarrage_stage" ).change(function() {
+        if(!!document.getElementById('plan_formations') == false || document.getElementById('plan_formations').value == ""){
+            alert("Sélectionner un agent puis un plan de formation !!!");
+            document.getElementById('date_demarrage_stage').value = "";
+        }else{
+            console.log(document.getElementById('plan_formations').value);
+            sYear = document.getElementById('plan_formations').value.split("-");
+            eYear = document.getElementById('date_demarrage_stage').value.split("/");
+            if(eYear[2] < sYear[0] || eYear[2] > sYear[1]){
+                alert("Sélectionner une date entre le plan de formation !!!");
+                document.getElementById('date_demarrage_stage').value = "";
+            }
+            
+        }
+        
+    });
 
     function al(){
         var id_state = document.getElementById('states').value;
@@ -377,12 +422,77 @@
                     }
                   
                 }
+
               })
               .catch(function(err) {
                 // Une erreur est survenue
               });
         }); 
     });
+
+    function validate() {
+        if (document.getElementById('flexCheckChecked').checked) {
+            document.getElementById('nature').disabled = false;
+        } else {
+            alert("Le box boursier est désactivé. Vous ne pouvez plus écrire dans 'Nature de la bourse'");
+            document.getElementById('nature').value = "";
+            document.getElementById('nature').disabled = true;
+        }
+    }
+
+
+    $(document).ready(function() {
+        $('#agentselected').on('change', function() {
+            var id_agent = document.getElementById('agentselected').value;
+            var url = "{{route('getPlanByAgentID', '')}}"+"/"+id_agent;
+            fetch(url)
+              .then(function(res) {
+                if (res.ok) {
+                  return res.json();
+                }
+              })
+              .then(function(value) {
+                var myDiv = document.getElementById("plans");
+                if(!!document.getElementById("plan_formations")){
+                    document.getElementById("plan_formations").remove();
+                }
+                //Create and append select list
+                var selectList = document.createElement("select");
+                selectList.setAttribute("name", "plan_formations");
+                selectList.setAttribute("id", "plan_formations");
+                selectList.setAttribute("onchange", "planChaned()");
+                selectList.setAttribute("class", "form-control");
+                myDiv.appendChild(selectList);
+                for (const [key, val] of Object.entries(value)) {
+                    for (const [k2, v2] of Object.entries(val)) {
+                        var id = "";
+                        var annee_debut = "";
+                        var annee_fin = "";
+                        for (const [k3, v3] of Object.entries(v2)) {
+                            if (k3 == 'id') {
+                                id = v3;
+                            }else if(k3 == 'annee_debut'){
+                                annee_debut = v3;
+                            }else{
+                                annee_fin = v3;
+                            }
+                        }
+                        var option = document.createElement("option");
+                        option.setAttribute("value",annee_debut+'-'+annee_fin);
+                        option.text = annee_debut+'-'+annee_fin;
+                        selectList.appendChild(option);
+                    }
+                }
+
+                
+              })
+              .catch(function(err) {
+                console.log("Une erreur est survenue");
+                // Une erreur est survenue
+              }); 
+        });
+    });
+
 </script>
 
 

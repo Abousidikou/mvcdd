@@ -869,6 +869,7 @@ class InfosController extends Controller
 
         if(!in_array($extension,$allowed))
         {
+            dd('validation error');
             return redirect()->back()->with('validation','error');
         }
         else
@@ -898,9 +899,10 @@ class InfosController extends Controller
                     break;
                 }
             }
-
+            
             if($unitPos == null)
             {
+                dd('unit error');
                 return redirect()->back()->with('unit','unit');
             }
 
@@ -920,14 +922,15 @@ class InfosController extends Controller
                 {
                     $indicator = (int)$indicator;
                 }
-
+                
                 if($indicator == null)
                 {
                     $linesWithError[] = $i;
                     continue;
                 }
-
+                
                 $linkedLevels = Indicators::find($indicator)->levels()->get();
+                
                 $rlinkedLevels = [];
 
                 foreach($linkedLevels as $level)
@@ -953,6 +956,7 @@ class InfosController extends Controller
                         }
                         if(!in_array($levelId,$rlinkedLevels))
                         {
+                            
                             $linesError[] = $i;
                             $lineHasError = true;
                             break;
@@ -984,9 +988,11 @@ class InfosController extends Controller
                             $yearArray[] = $year;
                         }
                     }
+                    
 
                 }
                 
+                /* dd($levelsArray,$valueArray,$yearArray);
                 if($levelsArray == null || (count($levelsArray))==0)
                 {
                     if($lineHasError)
@@ -998,10 +1004,14 @@ class InfosController extends Controller
                         $linesError[] = $i;
                         continue;
                     }
-                }
-
-                if($this->chkOldDataNotExist($indicator, $levelsArray, $yearArray)==false)
+                } */
+                
+                
+                if($this->chkOldDataNotExist($indicator, $levelsArray, $yearArray) == false)
                 {
+
+                    $updated = $this->updateOldData($indicator, $levelsArray, $yearArray,$valueArray);
+                    if($updated) continue;
                     if($lineHasError)
                     {
                         continue;
@@ -1064,10 +1074,49 @@ class InfosController extends Controller
         }
     }
 
+    public function updateOldData($indicator, $levelsArray, $yearArray,$valueArray)
+    {
+        $oldData = Data::where('id_indicator','=',$indicator)->get();
+        foreach($oldData as $data)
+        {
+            $linkedLevels = $data->levels()->get();
+            $rlinkedLevels = [];
+
+            foreach($linkedLevels as $level)
+            {
+                $rlinkedLevels[] = $level->id;
+            }
+
+            if($this->arraysAreEquals($rlinkedLevels, $levelsArray))
+            {
+                if(in_array($data->year,$yearArray))
+                {
+                    $key = array_search($data->year,$yearArray);
+                    $data->value = $valueArray[$key];
+                    if($data->save()){
+                        continue;
+                    }else{
+                        return false;
+                    }
+                    continue;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+        return true;
+    }
+
     public function chkOldDataNotExist($indicator, $levelsArray, $yearArray)
     {
         $oldData = Data::where('id_indicator','=',$indicator)->get();
-        //dd($oldData);
         foreach($oldData as $data)
         {
             $linkedLevels = $data->levels()->get();

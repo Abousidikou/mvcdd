@@ -67,8 +67,32 @@
 
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" value="{{ $agent->plan_formation }}" name="plan_formation" required>
-                                    <label class="form-label">Plan de formation</label>
+                                    @if ($agent->avis_commission == 1)
+                                        <input class="form-check-input" type="checkbox" name="avis_commission" id="flexCheckChecked"  checked>
+                                    @else
+                                    <input class="form-check-input" type="checkbox" name="avis_commission" id="flexCheckChecked" >
+                                    @endif
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Avis de la commission 
+                                    </label>
+                                </div>
+                                <div class="help-info"></div>
+                            </div>
+
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label>Plan de formations</label><br>
+                                    <select name="plan_formations[]" class="selectpicker form-control show-tick" data-live-search="true" multiple>
+                                        @foreach($plan_formations as $plan)
+                                            @if ($agentPlans->search($plan->id))
+                                                <option value="{{ $plan->id }}" style="background:#919c9e; color: #fff;" selected>{{ $plan->annee_debut }}-{{ $plan->annee_fin }}</option>
+                                            @else
+                                                <option value="{{ $plan->id }}" style="background:#919c9e; color: #fff;">{{ $plan->annee_debut }}-{{ $plan->annee_fin }}</option>
+                                            @endif
+                                            
+                                        @endforeach
+                                    </select>
+                                    <label class="form-label"></label>
                                 </div>
                                 <div class="help-info"></div>
                             </div>

@@ -2,8 +2,6 @@
 
 
 
-
-
 @section('content')
 
 <div class="block-header">
@@ -32,14 +30,23 @@
                             <div class="row">
                                 @foreach ($typeAndLevelArray as $key => $typeArr)
                                 <div class="col-md-3">
-                                    <select name="level-{{$loop->index}}" class="form-control show-tick" data-live-search="true">
-                                        <option value="null">Filtrer par {{$key}}</option>
+                                    <select name="level-{{$loop->index}}[]" class="form-control show-tick" data-live-search="true" multiple>
+                                        <option value="null" selected>Filtrer par {{$key}}</option>
                                         @foreach ($typeArr as $level)
                                             <option value="{{$level}}" {{$level == old('level-'.$loop->parent->index) ? 'selected': ''}}>{{$level}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 @endforeach
+
+                                <div class="col-md-3">
+                                    <select name="periodes[]" class="form-control show-tick" data-live-search="true" multiple>
+                                        <option value="null" selected>Filtrer par Périodes</option>
+                                        @foreach ($allyears as $year)
+                                            <option value="{{$year}}">{{$year}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 
                                 <div class="col-md-3">
                                     <button type="submit"  name="filter" class="btn btn-success btn-md" value="0"> Filtrer </button>
@@ -55,7 +62,7 @@
                     </h2>
 
                 </div>
-
+                
                 <div class="body table table-responsive" style="overflow-x: scroll">
 
                     <table class="table table-responsive table-striped table-bordered table-condensed table-hover js-basic-example">
@@ -69,9 +76,15 @@
 
                                 <th>Units</th>
 
-                                @foreach ($allyears as $year)
-                                    <th>{{$year}}</th>
-                                @endforeach
+                                @if (count($periodes) == 0)
+                                    @foreach ($allyears as $year)
+                                        <th>{{$year}}</th>
+                                    @endforeach
+                                @else
+                                    @foreach ($periodes as $periode)
+                                        <th>{{$periode}}</th>
+                                    @endforeach
+                                @endif
                             </tr>
 
                         </thead>
@@ -83,13 +96,23 @@
                                         <td>{{$level}}</td>
                                     @endforeach
                                     <td>Nombre</td>
-                                    @foreach ($allyears as $year)
-                                        @if (array_key_exists($year, $info->years))
-                                            <td>{{$info->years[$year]}}</td>
-                                            @else
-                                            <td>--</td>
-                                        @endif
-                                    @endforeach
+                                    @if (count($periodes) == 0)
+                                        @foreach ($allyears as $year)
+                                            @if (array_key_exists($year, $info->years))
+                                                <td>{{$info->years[$year]}}</td>
+                                                @else
+                                                <td>--</td>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        @foreach ($periodes as $periode)
+                                            @if (array_key_exists($periode, $info->years))
+                                                <td>{{$info->years[$periode]}}</td>
+                                                @else
+                                                <td>--</td>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

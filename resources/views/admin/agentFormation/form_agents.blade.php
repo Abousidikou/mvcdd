@@ -85,12 +85,26 @@
 
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="plan_formation" required>
-                                    <label class="form-label">Plan de formation</label>
+                                    <input class="form-check-input" type="checkbox" name="avis_commission" id="flexCheckChecked"  checked>
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Avis de la commission 
+                                    </label>
                                 </div>
                                 <div class="help-info"></div>
                             </div>
 
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label>Plan de formations</label><br>
+                                    <select name="plan_formations[]" class="selectpicker form-control show-tick" data-live-search="true" multiple>
+                                        @foreach($plan_formations as $plan)
+                                            <option value="{{ $plan->id }}" style="background:#919c9e; color: #fff;">{{ $plan->annee_debut }}-{{ $plan->annee_fin }}</option>
+                                        @endforeach
+                                    </select>
+                                    <label class="form-label"></label>
+                                </div>
+                                <div class="help-info"></div>
+                            </div>
                             
                             <div class="form-group form-float">
                                 <div class="form-line">

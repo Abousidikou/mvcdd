@@ -215,7 +215,7 @@
                 @else
 
                     @if(Auth::user()->role=="admin")
-
+                            <em><i>| ADMIN |</i></em>
                         <a href="{{route('domains')}}" class="list-group-item">
                             <p class="list-group-item-text">
                                 GESTION DES DOMAINES
@@ -234,13 +234,11 @@
                             </p>
                         </a>
 
-                        @if(Auth::user()->role == "admin")
-                            <a href="{{route('agents')}}" class="list-group-item">
-                                <p class="list-group-item-text">
-                                    GESTION DES UTILISATEURS
-                                </p>
-                            </a>
-                        @endif
+                        <a href="{{route('agents')}}" class="list-group-item">
+                            <p class="list-group-item-text">
+                                GESTION DES UTILISATEURS
+                            </p>
+                        </a>
                         
                         <a href="{{route('indicators')}}" class="list-group-item">
                             <p class="list-group-item-text">
@@ -260,11 +258,11 @@
                                     GESTION DES INFORMATIONS STATISTIQUES
                                 </p>
                         </a>
+                            <em><i>| FORMATION |</i></em>
 
-                    @elseif(Auth::user()->role=="agents_m")
                         <a href="{{route('agentFormation.data')}}" class="list-group-item">
                             <p class="list-group-item-text">
-                                GESTION DES AGENTS EN STAGE
+                                GESTION DES PLANS DE FORMATION
                             </p>
                         </a>
                         <a href="{{route('miseEnStage.data')}}" class="list-group-item">
@@ -285,10 +283,32 @@
                             </p>
                         </a>
 
-                    @endif                     
-                        @if(Auth::user()->role != 'agents_m')
-                            
-                        @endif
+
+                    @elseif(Auth::user()->role=="agents_m" || Auth::user()->role == "agents_gen")
+                        <a href="{{route('agentFormation.data')}}" class="list-group-item">
+                            <p class="list-group-item-text">
+                                GESTION DES PLANS DE FORMATION
+                            </p>
+                        </a>
+                        <a href="{{route('miseEnStage.data')}}" class="list-group-item">
+                            <p class="list-group-item-text">
+                                GESTION DES MISES EN STAGE
+                            </p>
+                        </a>
+
+                        <a href="{{route('retourDeStage.data')}}" class="list-group-item">
+                            <p class="list-group-item-text">
+                                GESTION DES RETOURS DE STAGE
+                            </p>
+                        </a>
+
+                        <a href="{{route('aggregat.index')}}" class="list-group-item">
+                            <p class="list-group-item-text">
+                                EXPORTER LES AGREGATS
+                            </p>
+                        </a>
+
+                    @endif         
                         <br><br><br>
                         <a href="{{ route('logout') }}"
                                 class="list-group-item text-center btn-danger"

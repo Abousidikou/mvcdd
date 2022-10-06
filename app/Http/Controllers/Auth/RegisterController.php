@@ -38,9 +38,19 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        
         $this->middleware('auth');
     }
 
+    public function showRegistrationForm()
+    {
+        return redirect('login');
+    }
+    
+    public function register()
+    {
+    
+    }
 
     /**
      * Get a validator for an incoming registration request.

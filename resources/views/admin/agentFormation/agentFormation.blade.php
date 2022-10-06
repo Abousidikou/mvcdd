@@ -108,7 +108,7 @@
                             <hr>
                             <strong>Structure : </strong>    <small>{{$agent->structure ?? ''}}</small>
                             <hr>
-                            <strong>Plan de formation : </strong>    <small>{{$agent->plan_formation ?? ''}}</small>
+                            <strong>Avis de la commission : </strong>    <small>{{$agent->avis_commission ?? ''}}</small>
                             <hr>
                           </div>
                           <div class="modal-footer">
@@ -126,68 +126,81 @@
                     
 
 
-                    @if(Auth::user()->role == "admin" || Auth::user()->role == "agents_m" )
+                    @if(Auth::user()->role == "admin" || Auth::user()->role == "agents_m" || Auth::user()->role == "agents_gen" )
                         <caption style="caption-side: top; text-align:center" title="Cliquer pour ajouter un nouvel agent">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Générer les agrégats</button>    
+                            @if(Auth::user()->role == "admin" || Auth::user()->role == "agents_gen")
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Générer les agrégats</button>    
+                                <!-- Small modal -->
+                    
+
+                                <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Générer les Aggrégats</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <small>Selectionner les indicateurs et les années pour lesquels générer l'aagrégats <br> Selectionner [*] pour une génération globale.</small>
+                                    </div>
+                                    
+                                    <form id="aggregat" method="POST" action="{{ route('aggregat.genererAggregat') }}">
+                                    {{csrf_field()}}
+                                    <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="indicator">Selectionner l'indicateur</label><br>
+                                                <select name="indicator[]" class="form-control show-tick" data-live-search="true" id="indicateur" multiple required>
+                                                    <option value="-1" style="background:#919c9e; color: #fff;" selected>[*]</option>  
+                                                    <option value="226" style="background:#919c9e; color: #fff;" >Effectifs des agents civils de l’Etat ayant bénéficié de décision de mise en stage</option>        
+                                                    <option value="252" style="background:#919c9e; color: #fff;" >Effectifs des agents civils de l’Etat ayant bénéficié de décision de retour de stage</option>        
+                                                    <option value="225" style="background:#919c9e; color: #fff;" >Effectifs des agents civils de l’Etat ayant bénéficié de bourses</option>        
+                                                    <option value="251" style="background:#919c9e; color: #fff;" >Effectifs des agents civils de l’Etat n'ayant pas bénéficié de bourses</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="annee">Selectionner l'année</label><br>
+                                                <select name="annee[]" class="form-control show-tick" data-live-search="true" id="annee" multiple  required>
+                                                    <option value="-1" style="background:#919c9e; color: #fff;" selected>[*]</option>
+                                                    @foreach ($ann as $agg)
+                                                        <option value="{{ $agg }}" style="background:#919c9e; color: #fff;" >{{ $agg }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Générer</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                            @endif
                             <a href="{{route('agentFormation.form')}}" class="btn bg-green waves-effect">Ajouter des agents</a>
                             <a href="{{route('agentFormation.formimport')}}" class="btn bg-green waves-effect">Importer un fichier</a>
                             <a href="{{ route('agentFormation.exporter') }}" class="btn bg-green waves-effect">Exporter</a>
+                            <a href="{{ route('agentFormation.oneLine') }}" class="btn bg-green waves-effect">Exporter toute la base</a>
                             @if (session('path'))
                                 @php
                                     $path = session('path');
                                 @endphp
-                                <a href="{{url($path)}}" class="btn btn-secondary waves-effect" >Télécharger le fichier</a>
+                                <a href="{{url($path)}}" class="btn btn-secondary waves-effect" >Télécharger les agents</a>
+                            @endif
+                            @if (session('data'))
+                                @php
+                                    $path = session('data');
+                                @endphp
+                                <a href="{{url($path)}}" class="btn btn-secondary waves-effect" >Télécharger la base</a>
                             @endif
 
                         </caption>
                     @endif
                 </table>
 
-                <!-- Small modal -->
+                
+
                     
 
-                    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Générer les Aggrégats</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                            <small>Selectionner les indicateurs et les années pour lesquels générer l'aagrégats <br> Selectionner [*] pour une génération globale.</small>
-                        </div>
-                        
-                        <form id="aggregat" method="POST" action="{{ route('aggregat.genererAggregat') }}">
-                        {{csrf_field()}}
-                        <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="indicator">Selectionner l'indicateur</label><br>
-                                    <select name="indicator[]" class="form-control show-tick" data-live-search="true" id="indicateur" multiple required>
-                                        <option value="-1" style="background:#919c9e; color: #fff;" selected>[*]</option>  
-                                        <option value="226" style="background:#919c9e; color: #fff;" >Effectifs des agents civils de l’Etat ayant bénéficié de décision de mise en stage</option>        
-                                        <option value="252" style="background:#919c9e; color: #fff;" >Effectifs des agents civils de l’Etat ayant bénéficié de décision de retour de stage</option>        
-                                        <option value="225" style="background:#919c9e; color: #fff;" >Effectifs des agents civils de l’Etat ayant bénéficié de bourses</option>        
-                                        <option value="251" style="background:#919c9e; color: #fff;" >Effectifs des agents civils de l’Etat n'ayant pas bénéficié de bourses</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="annee">Selectionner l'année</label><br>
-                                    <select name="annee[]" class="form-control show-tick" data-live-search="true" id="annee" multiple  required>
-                                        <option value="-1" style="background:#919c9e; color: #fff;" selected>[*]</option>
-                                        @foreach ($ann as $agg)
-                                            <option value="{{ $agg }}" style="background:#919c9e; color: #fff;" >{{ $agg }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Générer</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                        </form>
-                        </div>
-                    </div>
-                    </div>
                     
             </div>
         </div>

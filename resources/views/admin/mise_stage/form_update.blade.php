@@ -62,7 +62,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <label>Agents</label><br>
-                                    <select name="id_agent" class="selectpicker form-control show-tick" data-live-search="true">
+                                    <select name="id_agent" id="agentselected" class="selectpicker form-control show-tick" data-live-search="true">
                                         @foreach($agents as $agent)
                                             @if($agent->id == $mise_stage->id_agent)
                                                 <option value="{{ $agent->id }}" style="background:#919c9e; color: #fff;" selected>{{ $agent->nom_prenoms }}</option>
@@ -79,7 +79,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="numero_decision_ms" value="{{ $mise_stage->numero_decision_ms ?? '' }}" required>
-                                    <label class="form-label">Numéro de decision de mise en stage</label>
+                                    <label class="form-label">Numéro de référence</label>
                                 </div>
                                 <div class="help-info"></div>
                             </div>
@@ -100,7 +100,7 @@
                                         <input class="form-check-input" type="checkbox" name="isBoursier" id="flexCheckChecked">
                                     @endif
                                     <label class="form-check-label" for="flexCheckChecked">
-                                        Checked checkbox
+                                        Bouriser
                                     </label>
                                 </div>
                                 <div class="help-info"></div>
@@ -108,11 +108,12 @@
 
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="nature_bourse" value="{{ $mise_stage->nature_bourse ?? '' }}" required>
+                                    <input type="text" class="form-control" name="nature_bourse" value="{{ $mise_stage->nature_bourse ?? '' }}" id="nature" required>
                                     <label class="form-label">Nature de la bourse</label>
                                 </div>
                                 <div class="help-info"></div>
                             </div>
+
 
                             <div class="form-group form-float">
                                 <div class="form-line">
@@ -280,10 +281,14 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 <script type="text/javascript">
+      
+    
+    
+
       $( function() {
         $( "#date_signature" ).datepicker({
             dateFormat: "mm/dd/yy",
-            minDate: 0, 
+            //minDate: 0, 
             //maxDate: "+12M +10D"
         });
       } );
@@ -291,14 +296,15 @@
         $( function() {
         $( "#date_demarrage_stage" ).datepicker({
             dateFormat: "mm/dd/yy",
-            minDate: 0, 
-            //maxDate: "+12M +10D"
+            //minDate: sYear, 
+            //maxDate: eYear
         });
       } );
 
+      
 
-   
 
+ 
     function al(){
         var id_state = document.getElementById('states').value;
         console.log(id_state);
@@ -390,12 +396,27 @@
                     }
                   
                 }
+
               })
               .catch(function(err) {
                 // Une erreur est survenue
               });
         }); 
     });
+
+    function validate() {
+        if (document.getElementById('flexCheckChecked').checked) {
+            document.getElementById('nature').disabled = false;
+        } else {
+            alert("Le box boursier est désactivé. Vous ne pouvez plus écrire dans 'Nature de la bourse'");
+            document.getElementById('nature').value = "";
+            document.getElementById('nature').disabled = true;
+        }
+    }
+
+
+    
+
 </script>
 
 

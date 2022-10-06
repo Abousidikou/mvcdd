@@ -107,18 +107,27 @@
                                     <option value="admin" selected>Administrateur</option>
                                     <option value="see_stats">Utilisateur simple</option>
                                     <option value="agents_m">Gérant des Agents</option>
+                                    <option value="agents_gen">Gérant des Agents | Agrégats</option>
                                 @elseif($agent->role == "see_stats")
                                     <option value="admin" >Administrateur</option>
                                     <option value="see_stats" selected>Utilisateur simple</option>
                                     <option value="agents_m">Gérant des Agents</option>
+                                    <option value="agents_gen">Gérant des Agents | Agrégats</option>
                                 @elseif($agent->role == "agents_m")
                                     <option value="admin" >Administrateur</option>
                                     <option value="see_stats" >Utilisateur simple</option>
                                     <option value="agents_m" selected>Gérant des Agents</option>
+                                    <option value="agents_gen">Gérant des Agents | Agrégats</option>
+                                @elseif($agent->role == "agents_gen")
+                                    <option value="admin" >Administrateur</option>
+                                    <option value="see_stats" >Utilisateur simple</option>
+                                    <option value="agents_m" >Gérant des Agents</option>
+                                    <option value="agents_gen" selected>Gérant des Agents | Agrégats</option>
                                 @else
                                     <option value="admin" >Administrateur</option>
                                     <option value="see_stats" selected>Utilisateur simple</option>
                                     <option value="agents_m">Gérant des Agents</option>
+                                    <option value="agents_gen">Gérant des Agents | Agrégats</option>
                                 @endif
                             </select>
 

@@ -454,6 +454,7 @@ class ComposerStaticInit13c9f7825a7ce04d0c3634ed133bde3e
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Models\\AgentFormation' => __DIR__ . '/../..' . '/app/Models/AgentFormation.php',
+        'App\\Models\\AgentPlan' => __DIR__ . '/../..' . '/app/Models/AgentPlan.php',
         'App\\Models\\AggregatValue' => __DIR__ . '/../..' . '/app/Models/AggregatValue.php',
         'App\\Models\\City' => __DIR__ . '/../..' . '/app/Models/City.php',
         'App\\Models\\Country' => __DIR__ . '/../..' . '/app/Models/Country.php',

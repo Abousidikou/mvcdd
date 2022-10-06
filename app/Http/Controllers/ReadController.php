@@ -31,15 +31,23 @@ class ReadController extends Controller
     public function readIndicators($id,$subdomain, Request $request)
     {
         $levelstf = $request->all();
-        //dd(int($j));
-        //dd($levelstf);
         $levelToFilterWith = [];
+        $periodes = [];
         foreach ($levelstf as $lev => $values) {
-            //dd($lev);
-            if($values != 'null' && $values != null && $lev != 'filter' && $lev != 'plus') {
-                $levelToFilterWith[] = $values;
+            if(is_array($values)){
+                foreach ($values as $key => $value) {
+                    if($value != 'null' && $value != null && $lev != 'filter' && $lev != 'plus') {
+                        if(is_numeric($value) && strlen($value) == 4) {
+                            $periodes[] = $value;
+                            continue;
+                        }
+                        $levelToFilterWith[] = $value;
+                    }
+                }
             }
         }
+        
+        //dd($periodes,$levelToFilterWith);
         //dd($levelstf,$levelToFilterWith);
         $id_indicator = $id;
         $id_subdomain = $subdomain;
@@ -56,11 +64,19 @@ class ReadController extends Controller
         $filter = intval($request->input('filter','10'));
         $last_id = ($filter == 0) ? 0 : $plus;
         //dd($filter,$plus);
-        $total = Data::where('id_indicator',$id)->orderBy('year','desc')->orderBy('id','asc')->count();
+        if(count($periodes) == 0){
+            $total = Data::where('id_indicator',$id)->orderBy('year','desc')->orderBy('id','asc')->count();
+        }else{
+            $total = Data::where('id_indicator',$id)->whereIn('year',$periodes)->orderBy('year','desc')->orderBy('id','asc')->count();
+        }
         //$c = 0;
         $off = 500;
-        $infos = Data::where('id_indicator',$id)->orderBy('year','desc')->orderBy('id','asc')->offset($last_id * $off)->limit($off)->get();
-        //dd($infos);
+        if(count($periodes) == 0){
+            $infos = Data::where('id_indicator',$id)->orderBy('year','desc')->orderBy('id','asc')->offset($last_id * $off)->limit($off)->get();
+        }else{
+            $infos = Data::where('id_indicator',$id)->whereIn('year',$periodes)->orderBy('year','desc')->orderBy('id','asc')->offset($last_id * $off)->limit($off)->get();
+        }
+        
         $isPlus = (($total - ($last_id * $off) - $infos->count()) >  0) ? true : false;
         //dd($isPlus);
 
@@ -149,10 +165,16 @@ class ReadController extends Controller
                 }
             }
         }
-        // dd($infoArray[$info->lvhash], $types);
+        
         $request->flash();
+        $allyears = [];
+        $allY = Data::select('year')->where('id_indicator',$id)->orderBy('year','desc')->orderBy('id','asc')->get();
+        foreach ($allY as $key => $value) {
+            $allyears[] = $value->year;
+        }
+        $allyears = array_unique($allyears);
         //dd($infoArray, $types, $allyears, $id_indicator,$id_subdomain, $subdomain, $indicator, $typeAndLevelArray);
-        return view('read.index',compact('infoArray', 'types', 'allyears', 'id_indicator','id_subdomain', 'subdomain', 'indicator', 'typeAndLevelArray','last_id', 'isPlus'));
+        return view('read.index',compact('periodes','infoArray', 'types', 'allyears', 'id_indicator','id_subdomain', 'subdomain', 'indicator', 'typeAndLevelArray','last_id', 'isPlus'));
     }
 
     public function export($indicator,$subdomain)
@@ -347,5 +369,10 @@ class ReadController extends Controller
     public function array_key_first($a)
     {
         return array_keys($a)[0];
+    }
+
+    public function graphique($id_domain,$id_level,$domain )
+    {
+
     }
 }

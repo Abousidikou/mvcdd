@@ -164,6 +164,7 @@ Route::prefix('agentFormation')->group(function(){
 
     Route::get('genererExp','AgentFormation\AgentFormationController@genererExp')->name('agentFormation.genererExp');
 
+    Route::get('oneLine','AgentFormation\AgentFormationController@oneLine')->name('agentFormation.oneLine');
  });
 
 Route::prefix('miseEnStage')->group(function(){
@@ -186,6 +187,8 @@ Route::prefix('miseEnStage')->group(function(){
     Route::post('import','MiseEnStage\MiseEnStageController@import')->name('miseEnStage.import');
 
     Route::get('genererExp','MiseEnStage\MiseEnStageController@genererExp')->name('miseEnStage.genererExp');
+
+    Route::get('getPlanByAgentID/{id}','MiseEnStage\MiseEnStageController@getPlanByAgentID')->name('getPlanByAgentID');
  });
 
 Route::prefix('retourDeStage')->group(function(){

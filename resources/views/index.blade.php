@@ -14,97 +14,97 @@
 
 <!-- Widgets -->
 
-<div class="row clearfix">
+    <div class="row clearfix">
 
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
 
-        <div class="info-box bg-pink hover-expand-effect">
+            <div class="info-box bg-pink hover-expand-effect">
 
-            <div class="icon">
+                <div class="icon">
 
-                <i class="material-icons">playlist_add_check</i>
+                    <i class="material-icons">playlist_add_check</i>
+
+                </div>
+
+                <div class="content">
+
+                    <div class="text">INDICATEURS</div>
+
+                    <div class="number count-to" data-from="0" data-to="{{$numberOfIndicators}}" data-speed="15" data-fresh-interval="20"></div>
+
+                </div>
 
             </div>
 
-            <div class="content">
+        </div>
 
-                <div class="text">INDICATEURS</div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
 
-                <div class="number count-to" data-from="0" data-to="{{$numberOfIndicators}}" data-speed="15" data-fresh-interval="20"></div>
+            <div class="info-box bg-cyan hover-expand-effect">
+
+                <div class="icon">
+
+                    <i class="material-icons">playlist_add_check</i>
+
+                </div>
+
+                <div class="content">
+
+                    <div class="text">NIVEAUX</div>
+
+                    <div class="number count-to" data-from="0" data-to="{{$numberOfLevels}}" data-speed="1000" data-fresh-interval="20"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+            <div class="info-box bg-light-green hover-expand-effect">
+
+                <div class="icon">
+
+                    <i class="material-icons">playlist_add_check</i>
+
+                </div>
+
+                <div class="content">
+
+                    <div class="text">TYPES</div>
+
+                    <div class="number count-to" data-from="0" data-to="{{$numberOfTypes}}" data-speed="1000" data-fresh-interval="20"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+            <div class="info-box bg-orange hover-expand-effect">
+
+                <div class="icon">
+
+                    <i class="material-icons">playlist_add_check</i>
+
+                </div>
+
+                <div class="content">
+
+                    <div class="text">DONNEES</div>
+
+                    <div class="number count-to" data-from="0" data-to="{{$numberOfData}}" data-speed="1000" data-fresh-interval="20"></div>
+
+                </div>
 
             </div>
 
         </div>
 
     </div>
-
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-
-        <div class="info-box bg-cyan hover-expand-effect">
-
-            <div class="icon">
-
-                <i class="material-icons">playlist_add_check</i>
-
-            </div>
-
-            <div class="content">
-
-                <div class="text">NIVEAUX</div>
-
-                <div class="number count-to" data-from="0" data-to="{{$numberOfLevels}}" data-speed="1000" data-fresh-interval="20"></div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-
-        <div class="info-box bg-light-green hover-expand-effect">
-
-            <div class="icon">
-
-                <i class="material-icons">playlist_add_check</i>
-
-            </div>
-
-            <div class="content">
-
-                <div class="text">TYPES</div>
-
-                <div class="number count-to" data-from="0" data-to="{{$numberOfTypes}}" data-speed="1000" data-fresh-interval="20"></div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-
-        <div class="info-box bg-orange hover-expand-effect">
-
-            <div class="icon">
-
-                <i class="material-icons">playlist_add_check</i>
-
-            </div>
-
-            <div class="content">
-
-                <div class="text">DONNEES</div>
-
-                <div class="number count-to" data-from="0" data-to="{{$numberOfData}}" data-speed="1000" data-fresh-interval="20"></div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
 
 <!-- #END# Widgets -->
 
@@ -378,10 +378,25 @@
 
 <div class="row clearfix">
 
-    <!-- Task Info -->
+    <!-- Tableau-graphique et derniere ligne ajoutées de board Info -->
 
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <div class="card">
 
+            <div class="header">
+
+                <h2>GRAPHIQUE </h2> 
+
+            </div>
+
+            <div class="body">
+
+                <div id="flot-placeholder"></div>
+
+            </div>
+
+        </div>
+        <!-- Tableau de board Info -->
         <div class="card">
 
             <div class="header">
@@ -467,12 +482,13 @@
             </div>
 
         </div>
-
+        <!-- #END#  Info -->
     </div>
 
-    <!-- #END# Task Info -->
+    <!-- #END#  Info -->
 
-    <!-- Browser Usage -->
+ 
+    <!-- Donuts Usage -->
 
     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 
@@ -494,8 +510,30 @@
 
     </div>
 
-    <!-- #END# Browser Usage -->
+    <!-- #END# Donuts Usage -->
 
+    <!-- List subdomain 2/4 -->
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+        <div class="card">
+
+            <div class="header">
+
+                <h2>SOUS-DOMAINES</h2>
+
+            </div>
+
+            <div class="body">
+
+                <div id="list_subdomain" class="dashboard-donut-chart"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- #END# List subdomain -->
 </div>
 
 @endsection
@@ -523,6 +561,59 @@
                 processData: false,
 
     
+
+                success: function(response)
+
+                {
+
+                    if(document.getElementById("donut_chart"))
+
+                    {
+
+                        Morris.Donut({
+
+                            element: 'donut_chart',
+
+                            data: JSON.parse(response),
+
+                            colors: ['rgb(233, 30, 99)', 'rgb(0, 188, 212)', 'rgb(255, 152, 0)', 'rgb(0, 150, 136)', 'rgb(96, 125, 139)'],
+
+                            formatter: function (y) {
+
+                                return y + '%'
+
+                            }
+
+                        });
+
+                    }
+
+                },
+
+                error: function(error)
+
+                {
+
+                    console.log(JSON.parse(error));
+
+                }
+
+            })
+
+            var graphique = 
+            $.ajax({
+
+                url: server_url,
+
+                method: "GET",
+
+                dataType: 'text', 
+
+                contentType:false,
+
+                processData: false,
+
+
 
                 success: function(response)
 

@@ -115,6 +115,7 @@
                                     <option value="see_stats" selected>Utilisateur simple</option>
                                     <option value="admin" >Administrateur</option>
                                     <option value="agents_m">Gérant des Agents</option>
+                                    <option value="agents_gen">Gérant des Agents | Agrégats</option>
                             </select>
 
                             

@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS `SANSBOURSE`;
+/* DROP PROCEDURE IF EXISTS `SANSBOURSE`;
 DELIMITER $$
 CREATE  PROCEDURE `SANSBOURSE`(IN `indic` INT, IN `yearr` INT)
     NO SQL
@@ -687,5 +687,25 @@ INSERT INTO `levelofdisintegration` (`id`, `wording`, `id_type`, `created_at`, `
 INSERT INTO `levelofdisintegration` (`id`, `wording`, `id_type`, `created_at`, `updated_at`) VALUES (NULL, 'null', '122', NULL, NULL);
 INSERT INTO `levelofdisintegration` (`id`, `wording`, `id_type`, `created_at`, `updated_at`) VALUES (NULL, 'null', '124', NULL, NULL);
 ALTER TABLE `mise_en_stages`  ADD `isBoursier` BOOLEAN NOT NULL  AFTER `nature_bourse`;
+ */
 
 
+
+
+
+
+DROP PROCEDURE IF EXISTS `FILLPLANS`;
+DELIMITER $$
+CREATE  PROCEDURE `FILLPLANS`()
+    NO SQL
+BEGIN
+    DECLARE row_count INT DEFAULT 2000;
+    WHILE  row_count < 2101 DO
+            INSERT INTO plan_formations (annee_debut,annee_fin,plage) VALUES (row_count,row_count+3,3) ;
+            SET row_count = row_count + 1;
+    END WHILE;
+End$$
+DELIMITER ;
+
+
+CALL FILLPLANS();

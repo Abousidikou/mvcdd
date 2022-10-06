@@ -62,7 +62,7 @@
                                         </a>
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal{{ $m_s->id }}">
-                                          Détail
+                                        <i class="material-icons">info</i>
                                         </button>
                                     </div>
                                 </td>
@@ -128,7 +128,7 @@
                     
 
 
-                    @if(Auth::user()->role == "admin" || Auth::user()->role == "agents_m" )
+                    @if(Auth::user()->role == "admin" || Auth::user()->role == "agents_m" || Auth::user()->role == "agents_gen")
                         <caption style="caption-side: top; text-align:center" title="Cliquer pour ajouter un nouvel agent">
                             <a href="{{route('miseEnStage.form_insert')}}" class="btn bg-green waves-effect">Ajouter une entrée</a>
                             <a href="{{ route('miseEnStage.export') }}" class="btn bg-green waves-effect">Exporter</a>

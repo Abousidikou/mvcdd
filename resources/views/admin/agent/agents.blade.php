@@ -89,9 +89,7 @@
                                     <td>{{$agent->email}}</td>
 
                                     <td>{{$agent->struct}}</td>
-
-                                    @if($agent->role == "admin")
-                                        <td>
+                                    <td>
 
                                             <a href="{{route('prepareUpdate.agent', ['id' => $agent->id])}}" class="btn bg-green waves-effect"
 
@@ -109,8 +107,7 @@
                                                 <i class="material-icons">delete_forever</i>
                                             </a>
 
-                                        </td>
-                                    @endif
+                                    </td>
 
                                 </tr>
 

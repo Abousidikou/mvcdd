@@ -58,11 +58,7 @@ class RetourDeStageController extends Controller
         }
         else
         {
-            $isagent = AgentFormation::where('id',$request->id_agent)->first();
-            if($isagent == null)
-            {
-                return redirect()->back()->with('agents_not_exist','error');
-            }
+            
             $mise_r = new RetourDeStage;
             $mise_r->id_agent = $request->id_agent;
             $mise_r->numero_decision_rs = $request->numero_decision_rs;
@@ -335,8 +331,7 @@ class RetourDeStageController extends Controller
                 }
                 if(!$this->agentExist($currentMatricule))
                 {
-                    dd($currentMatricule);
-                    $errormsg = "l'Agent n'existe pas.";
+                    $errormsg = "l'Agent n'existe pas ou n'est pas en stage.";
                     $linesWithError[] = $i;
                 }
                 else
@@ -390,11 +385,18 @@ class RetourDeStageController extends Controller
         
         $matricule = trim(strtolower($mat));
         $agent = AgentFormation::where('matricule',$matricule)->first();
-        if($agent == null)
+        
+        if($agent != null)
         {
-            return false;
+            $mise = MiseEnStage::where('id_agent',$agent->id)->first();
+            if($mise == null){
+                return false;
+            }else{
+                return true;
+            }
+            
         }
-        return true;
+        return false;
     }
 
     public function copyRowsFromArray($rows, Spreadsheet $oldSpreadSheet)
@@ -441,16 +443,16 @@ class RetourDeStageController extends Controller
         $retour_stage = $spreadsheet->getActiveSheet();
         $mise_r = RetourDeStage::all();
         $datasetname = "retour_de_stage";
-        $retour_stage->getCellByColumnAndRow(1,1)->setValue("Matricule");
-        $retour_stage->getCellByColumnAndRow(2,1)->setValue("Nom & Prenoms");
-        $retour_stage->getCellByColumnAndRow(3,1)->setValue("Numéro de decision de retour de stage");
-        $retour_stage->getCellByColumnAndRow(4,1)->setValue("Date signature de retour en stage");
-        $retour_stage->getCellByColumnAndRow(5,1)->setValue("Date de fin de formation");
-        $retour_stage->getCellByColumnAndRow(6,1)->setValue("Date de reprise de service");
-        $retour_stage->getCellByColumnAndRow(7,1)->setValue("Catégorie RS");
-        $retour_stage->getCellByColumnAndRow(8,1)->setValue("Année RS");
-        $retour_stage->getCellByColumnAndRow(9,1)->setValue("Incidence BN");
-        $retour_stage->getCellByColumnAndRow(10,1)->setValue("Structure RS");
+        $retour_stage->getCellByColumnAndRow(1,1)->setValue("Matricule")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(2,1)->setValue("Nom & Prenoms")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(3,1)->setValue("Numéro de référence")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(4,1)->setValue("Date signature de retour en stage")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(5,1)->setValue("Date de fin de formation")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(6,1)->setValue("Date de reprise de service")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(7,1)->setValue("Catégorie RS")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(8,1)->setValue("Année RS")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(9,1)->setValue("Incidence BN")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(10,1)->setValue("Structure RS")->getStyle()->getFont()->setBold(true);
 
         $i = 2;
         foreach($mise_r as $mise)
@@ -458,9 +460,25 @@ class RetourDeStageController extends Controller
             $retour_stage->getCellByColumnAndRow(1,$i)->setValue($mise->agent->matricule);
             $retour_stage->getCellByColumnAndRow(2,$i)->setValue($mise->agent->nom_prenoms);
             $retour_stage->getCellByColumnAndRow(3,$i)->setValue($mise->numero_decision_rs);
-            $retour_stage->getCellByColumnAndRow(4,$i)->setValue($mise->date_signature);
-            $retour_stage->getCellByColumnAndRow(5,$i)->setValue($mise->date_fin_formation);
-            $retour_stage->getCellByColumnAndRow(6,$i)->setValue($mise->date_reprise_service);
+            $d1 = '';
+            if ($mise->date_signature != null && $mise->date_signature!= 'null' && $mise->date_signature != "") {
+                $d1 = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($mise->date_signature)->format('j/m/Y');
+            }else{
+                $d1 = $mise->date_signature;
+            }
+            $retour_stage->getCellByColumnAndRow(4,$i)->setValue($d1);
+            if ($mise->date_fin_formation != null && $mise->date_fin_formation!= 'null' && $mise->date_fin_formation != "") {
+                $d1 = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($mise->date_fin_formation)->format('j/m/Y');
+            }else{
+                $d1 = $mise->date_fin_formation;
+            }
+            $retour_stage->getCellByColumnAndRow(5,$i)->setValue($d1);
+            if ($mise->date_reprise_service != null && $mise->date_reprise_service!= 'null' && $mise->date_reprise_service != "") {
+                $d1 = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($mise->date_reprise_service)->format('j/m/Y');
+            }else{
+                $d1 = $mise->date_reprise_service;
+            }
+            $retour_stage->getCellByColumnAndRow(6,$i)->setValue($d1);
             $retour_stage->getCellByColumnAndRow(7,$i)->setValue($mise->categorie_rs);
             $retour_stage->getCellByColumnAndRow(8,$i)->setValue($mise->annee_rs);
             $retour_stage->getCellByColumnAndRow(9,$i)->setValue($mise->incidence_bn);
@@ -486,16 +504,16 @@ class RetourDeStageController extends Controller
         $datasetSheet = $spreadsheet->getSheet(0);
 
         
-        $datasetSheet->getCellByColumnAndRow(1,1)->setValue("Matricule");
-        $datasetSheet->getCellByColumnAndRow(2,1)->setValue("Nom & Prenoms");
-        $datasetSheet->getCellByColumnAndRow(3,1)->setValue("Numéro de decision de retour de stage");
-        $datasetSheet->getCellByColumnAndRow(4,1)->setValue("Date signature de mise en stage");
-        $datasetSheet->getCellByColumnAndRow(5,1)->setValue("Date de fin de formation");
-        $datasetSheet->getCellByColumnAndRow(6,1)->setValue("Date de reprise de service");
-        $datasetSheet->getCellByColumnAndRow(7,1)->setValue("Catégorie RS");
-        $datasetSheet->getCellByColumnAndRow(8,1)->setValue("Année RS");
-        $datasetSheet->getCellByColumnAndRow(9,1)->setValue("Incidence BN");
-        $datasetSheet->getCellByColumnAndRow(10,1)->setValue("Structure RS");
+        $datasetSheet->getCellByColumnAndRow(1,1)->setValue("Matricule")->getStyle()->getFont()->setBold(true);
+        $datasetSheet->getCellByColumnAndRow(2,1)->setValue("Nom & Prenoms")->getStyle()->getFont()->setBold(true);
+        $datasetSheet->getCellByColumnAndRow(3,1)->setValue("Numéro de référence")->getStyle()->getFont()->setBold(true);
+        $datasetSheet->getCellByColumnAndRow(4,1)->setValue("Date signature de mise en stage")->getStyle()->getFont()->setBold(true);
+        $datasetSheet->getCellByColumnAndRow(5,1)->setValue("Date de fin de formation")->getStyle()->getFont()->setBold(true);
+        $datasetSheet->getCellByColumnAndRow(6,1)->setValue("Date de reprise de service")->getStyle()->getFont()->setBold(true);
+        $datasetSheet->getCellByColumnAndRow(7,1)->setValue("Catégorie RS")->getStyle()->getFont()->setBold(true);
+        $datasetSheet->getCellByColumnAndRow(8,1)->setValue("Année RS")->getStyle()->getFont()->setBold(true);
+        $datasetSheet->getCellByColumnAndRow(9,1)->setValue("Incidence BN")->getStyle()->getFont()->setBold(true);
+        $datasetSheet->getCellByColumnAndRow(10,1)->setValue("Structure RS")->getStyle()->getFont()->setBold(true);
 
         $mise_r = RetourDeStage::all();
         $i = 2;
@@ -532,19 +550,19 @@ class RetourDeStageController extends Controller
         $retour_stage = $spreadsheet->getActiveSheet();
         $retour_stage->setTitle("retour_de_stage");
         $datasetname = "retour_de_stage";
-        $retour_stage->getCellByColumnAndRow(1,1)->setValue("Matricule");
-        $retour_stage->getCellByColumnAndRow(2,1)->setValue("Nom & Prenoms");
-        $retour_stage->getCellByColumnAndRow(3,1)->setValue("Numéro de decision de retour de stage");
-        $retour_stage->getCellByColumnAndRow(4,1)->setValue("Date signature de mise en stage");
-        $retour_stage->getCellByColumnAndRow(5,1)->setValue("Date de fin de formation");
-        $retour_stage->getCellByColumnAndRow(6,1)->setValue("Date de reprise de service");
-        $retour_stage->getCellByColumnAndRow(7,1)->setValue("Catégorie Code");
-        $retour_stage->getCellByColumnAndRow(8,1)->setValue("Catégorie RS");
-        $retour_stage->getCellByColumnAndRow(9,1)->setValue("Année Code ");
-        $retour_stage->getCellByColumnAndRow(10,1)->setValue("Année RS");
-        $retour_stage->getCellByColumnAndRow(11,1)->setValue("Incidence BN");
-        $retour_stage->getCellByColumnAndRow(12,1)->setValue("StructureCode");
-        $retour_stage->getCellByColumnAndRow(13,1)->setValue("Structure RS");
+        $retour_stage->getCellByColumnAndRow(1,1)->setValue("Matricule")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(2,1)->setValue("Nom & Prenoms")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(3,1)->setValue("Numéro de référence")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(4,1)->setValue("Date signature de mise en stage")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(5,1)->setValue("Date de fin de formation")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(6,1)->setValue("Date de reprise de service")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(7,1)->setValue("Catégorie Code")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(8,1)->setValue("Catégorie RS")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(9,1)->setValue("Année Code ")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(10,1)->setValue("Année RS")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(11,1)->setValue("Incidence BN")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(12,1)->setValue("StructureCode")->getStyle()->getFont()->setBold(true);
+        $retour_stage->getCellByColumnAndRow(13,1)->setValue("Structure RS")->getStyle()->getFont()->setBold(true);
 
 
         $spreadsheet->setActiveSheetIndex(0);
