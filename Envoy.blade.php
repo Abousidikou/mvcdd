@@ -16,6 +16,7 @@
     createRelease
     composer
     links
+    
     generateKey
     pclear
     currentRelease
@@ -79,8 +80,7 @@ composer clearcache;
 
 @task('createMigration')
     cd {{ $release }};
-    php artisan migrate --path=database/migrations/deployv1 --force;
-    php artisan migrate --path=database/migrations/aggregat --force;
+    php artisan migrate --path=database/migrations/deployv2 --force;
 @endtask
 
 @task('generateKey')
