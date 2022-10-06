@@ -600,58 +600,7 @@
 
             })
 
-            var graphique = 
-            $.ajax({
-
-                url: server_url,
-
-                method: "GET",
-
-                dataType: 'text', 
-
-                contentType:false,
-
-                processData: false,
-
-
-
-                success: function(response)
-
-                {
-
-                    if(document.getElementById("donut_chart"))
-
-                    {
-
-                        Morris.Donut({
-
-                            element: 'donut_chart',
-
-                            data: JSON.parse(response),
-
-                            colors: ['rgb(233, 30, 99)', 'rgb(0, 188, 212)', 'rgb(255, 152, 0)', 'rgb(0, 150, 136)', 'rgb(96, 125, 139)'],
-
-                            formatter: function (y) {
-
-                                return y + '%'
-
-                            }
-
-                        });
-
-                    }
-
-                },
-
-                error: function(error)
-
-                {
-
-                    console.log(JSON.parse(error));
-
-                }
-
-            })
+            
 
         }
 

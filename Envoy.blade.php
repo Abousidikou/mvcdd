@@ -16,7 +16,6 @@
     createRelease
     composer
     links
-    
     generateKey
     pclear
     currentRelease
