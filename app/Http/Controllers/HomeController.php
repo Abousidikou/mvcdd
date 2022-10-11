@@ -10,6 +10,8 @@ use App\Models\Level;
 use App\Models\Structures;
 use App\Models\SubDomain;
 use App\Models\Type;
+use DateTime;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -84,6 +86,9 @@ class HomeController extends Controller
             $info->date_start = date_format(date_create($info->date_start),'d-m-Y');
             $info->date_end = date_format(date_create($info->date_end),'d-m-Y');
         }
+
+
+    
         return view('index',compact('numberOfIndicators','numberOfTypes','numberOfLevels','numberOfData','dataStatArray','infos'));
     }
 
@@ -133,5 +138,162 @@ class HomeController extends Controller
         }
         //dd($dataStatArray);
         return json_encode($dataStatArray);
+    }
+
+    public function graphic($id_domain,$id_indicator,$id_first,$id_second,$id_third)
+    {
+        $allData = Data::all();
+
+
+        $d1 = [];
+        $d2 = [];
+        $d3 = [];
+        $dataToSend = [];
+        $yearArray = [];
+        $currrentYear = date('Y')+1;
+        for ($x = 0; $x < 10; $x++) {
+            $currrentYear = $currrentYear -1;
+            $yearArray[] = $currrentYear;
+            $d1[] = 0;
+            $d2[] = 0;
+            $d3[] = 0;
+        } 
+
+        
+        //dd($yearArray,$dACE,$dAPE,$dTotal);
+        foreach($allData as $data)
+        {
+            //dd($data->indicator->levels[0]);
+            
+            if($data->indicator->subdomain->domain->id == $id_domain){
+                if($data->indicator->id == $id_indicator){
+                    $year_id = array_search($data->year,$yearArray);
+                    if($year_id != false){
+                        if(DB::table('data_levels')->where('id_data',$data->id)->where('id_level',$id_first)->first() != null){
+                            $d1[$year_id] = $d1[$year_id] + (int)$data->value;
+                        }elseif (DB::table('data_levels')->where('id_data',$data->id)->where('id_level',$id_second)->first() != null) {
+                            $d2[$year_id] = $d2[$year_id] + (int)$data->value;
+                        }elseif (DB::table('data_levels')->where('id_data',$data->id)->where('id_level',$id_third)->first() != null) {
+                            $d3[$year_id] = $d3[$year_id] + (int)$data->value;
+                        }
+                        
+                    }
+                }
+            }
+
+        }
+
+        $first = [];
+        $second = [];
+        $third = [];
+        for ($x = 0; $x < 10; $x++) {
+            $d = [];
+            $d[] = $yearArray[$x];
+            $d[] = $d1[$x];
+            $first[] = $d;
+            $d = [];
+            $d[] = $yearArray[$x];
+            $d[] = $d2[$x];
+            $second[] = $d;
+            $d = [];
+            $d[] = $yearArray[$x];
+            $d[] = $d3[$x];
+            $third[] = $d;
+        } 
+        $dataToSend[] = $first;
+        $dataToSend[] = $second;
+        $dataToSend[] = $third;
+        return json_encode($dataToSend);
+    }
+
+    public function listSousdomain($id_domain){
+        // Variables
+/*         $id_func = 11;
+        $id_trav = 10;
+        $id_reform = 11;
+        $id_audit = 12;  */
+        // get SubDomain 
+        $dataToSend = [];
+        $functionPublic = [];
+        $travailSocial = [];
+        $audit =    [];
+        $reforme = [];
+
+        // Getting though indicators
+        $indicators = Indicators::all();
+        foreach ($indicators as  $line) {
+
+            if($line->subdomain->domain->id == $id_domain){
+                $dataExist = Data::where('id_indicator',$line->id)->first();
+                if($dataExist != null){
+                    if(array_key_exists($line->subdomain->wording,$functionPublic)){
+                        $functionPublic[$line->subdomain->wording][0] += 1; 
+                        $functionPublic[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $functionPublic[$line->subdomain->wording] = [1,1];
+                    }
+                }else{
+                    if(array_key_exists($line->subdomain->wording,$functionPublic)){
+                        $functionPublic[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $functionPublic[$line->subdomain->wording] = [0,1];
+                    }
+                }
+            }/* elseif ($line->subdomain->domain->id == $id_trav){
+                $dataExist = Data::where('id_indicator',$line->id)->first();
+                if($dataExist != null){
+                    if(array_key_exists($line->subdomain->wording,$travailSocial)){
+                        $travailSocial[$line->subdomain->wording][0] += 1; 
+                        $travailSocial[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $travailSocial[$line->subdomain->wording] = [1,1];
+                    }
+                }else{
+                    if(array_key_exists($line->subdomain->wording,$travailSocial)){
+                        $travailSocial[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $travailSocial[$line->subdomain->wording] = [0,1];
+                    }
+                }
+            }elseif ($line->subdomain->domain->id == $id_audit) {
+                $dataExist = Data::where('id_indicator',$line->id)->first();
+                if($dataExist != null){
+                    if(array_key_exists($line->subdomain->wording,$audit)){
+                        $audit[$line->subdomain->wording][0] += 1; 
+                        $audit[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $audit[$line->subdomain->wording] = [1,1];
+                    }
+                }else{
+                    if(array_key_exists($line->subdomain->wording,$audit)){
+                        $audit[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $audit[$line->subdomain->wording] = [0,1];
+                    }
+                }
+            }elseif ($line->subdomain->domain->id == $id_reform) {
+                $dataExist = Data::where('id_indicator',$line->id)->first();
+                if($dataExist != null){
+                    if(array_key_exists($line->subdomain->wording,$reforme)){
+                        $reforme[$line->subdomain->wording][0] += 1; 
+                        $reforme[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $reforme[$line->subdomain->wording] = [1,1];
+                    }
+                }else{
+                    if(array_key_exists($line->subdomain->wording,$reforme)){
+                        $reforme[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $reforme[$line->subdomain->wording] = [0,1];
+                    }
+                }
+            } */
+        }
+
+        /* $dataToSend[] = $travailSocial;
+        $dataToSend[] = $functionPublic;
+        $dataToSend[] = $reforme;
+        $dataToSend[] = $audit; */
+        return json_encode($functionPublic);
     }
 }

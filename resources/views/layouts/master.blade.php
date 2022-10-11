@@ -52,6 +52,10 @@
     <!-- JQuery DataTable Css -->
     <link href="{{asset('template/adminBSB/plugins/dataTables.bootstrap.css')}}" rel="stylesheet">
 
+    <!-- Flot plugin -->
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="http://www.pureexample.com/js/flot/excanvas.min.js"></script><![endif]-->
+        <script type="text/javascript" src="http://www.pureexample.com/js/lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="http://www.pureexample.com/js/flot/jquery.flot.min.js"></script>
     
 
 

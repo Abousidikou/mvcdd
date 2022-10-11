@@ -1,6 +1,30 @@
 @extends('layouts/master')
 
 
+@push('style')
+    <!-- <style type="text/css">
+            #flot-placeholder
+            {
+                width:350px;
+                height:300px;
+            }        
+    </style> -->
+<style>
+/*     #myProgress {
+    width: 100%;
+    background-color: #5834eb;
+    }
+
+    #myBar {
+    width: 10%;
+    height: 30px;
+    background-color: #04AA6D;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    } */
+</style>
+@endpush
 
 @section('content')
 
@@ -385,7 +409,7 @@
 
             <div class="header">
 
-                <h2>GRAPHIQUE </h2> 
+                <h2 id="label">GRAPHIQUE </h2> 
 
             </div>
 
@@ -487,6 +511,30 @@
 
     <!-- #END#  Info -->
 
+
+
+    <!-- List subdomain 2/4 -->
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+        <div class="card">
+
+            <div class="header">
+
+                <h2>SOUS-DOMAINES</h2>
+
+            </div>
+
+            <div class="body">
+
+                <div id="myBar" class="dashboard-donut-chart"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- #END# List subdomain -->
  
     <!-- Donuts Usage -->
 
@@ -512,28 +560,6 @@
 
     <!-- #END# Donuts Usage -->
 
-    <!-- List subdomain 2/4 -->
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-
-        <div class="card">
-
-            <div class="header">
-
-                <h2>SOUS-DOMAINES</h2>
-
-            </div>
-
-            <div class="body">
-
-                <div id="list_subdomain" class="dashboard-donut-chart"></div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- #END# List subdomain -->
 </div>
 
 @endsection
@@ -543,11 +569,7 @@
     <script>
 
         window.onload = function(){
-
             var server_url = '{{url("/dash/stat")}}';
-
-            
-
             $.ajax({
 
                 url: server_url,
@@ -600,14 +622,261 @@
 
             })
 
-            
-
         }
 
 
 
-        function showMoreDetails(infoId)
 
+        /*************************           Fonction d'affichage             ******************************/
+        // ✅ Get first element with data-id = `box1²
+
+
+        
+        const travailSocial = document.querySelector('[data-id="10"]');
+        travailSocial.addEventListener("click", graphicTravailSocial);
+        const fonctionPublic = document.querySelector('[data-id="11"]');
+        fonctionPublic.addEventListener("click", graphicFonctionPublique);
+        const reforme = document.querySelector('[data-id="12"]');
+        reforme.addEventListener("click", graphicReforme);
+        const audit = document.querySelector('[data-id="13"]');
+        audit.addEventListener("click", graphicAudit);
+
+        
+       /*************************           END   Fonction d'affichage             ******************************/
+        
+        
+        
+
+        /************************       Fonctions            *********************/
+        function tableTravailSocial(){
+
+        }
+
+        function tableFonctionPublique(){
+
+        }
+
+        function tableAudit(){
+
+        }
+
+        function tablegraphicReforme(){
+
+        }
+
+            
+
+       
+        function graphicFonctionPublique(){
+
+            document.getElementById('flot-placeholder').replaceChildren();
+            document.getElementById('myBar').replaceChildren();
+            document.getElementById('flot-placeholder').style.width = "500px";
+            document.getElementById('flot-placeholder').style.height = "300px";
+
+            var f_url = "{{ url('/graphic/11/211/1404/1405/1406') }}"
+            $.ajax({
+
+                url: f_url,
+
+                method: "GET",
+
+                dataType: 'text', 
+
+                contentType:false,
+
+                processData: false,
+
+
+
+                success: function(response)
+
+                {
+                    var datas = JSON.parse(response);
+                    if(document.getElementById("flot-placeholder"))
+
+                    {
+                        
+                        var dataset = [
+                            {
+                                label: "ACE",
+                                data: datas[1]
+                            },
+                            {
+                                label: "APE",
+                                data: datas[2]
+                            },
+                            {
+                                label: "Total Statuts",
+                                data: datas[3]
+                            }
+
+                        ];
+
+                        var options = {
+                            series: {  
+                                lines: { show: true },      
+                                points: {
+                                    radius: 3,
+                                    show: true
+                                }
+                            }
+                        };
+                        $.plot($("#flot-placeholder"), dataset, options);
+
+                    }
+
+                },
+
+                error: function(error)
+
+                {
+
+                    console.log(error);
+
+                }
+
+            });
+
+            var list_url = "{{ url('/listSousdomain/11') }}"
+            $.ajax({
+
+                url: list_url,
+
+                    method: "GET",
+
+                    dataType: 'text', 
+
+                    contentType:false,
+
+                    processData: false,
+
+
+
+                    success: function(response)
+
+                    {
+                       
+                        var datas = JSON.parse(response);
+                        
+                        var arr = ['alpha', 'bravo', 'charlie', 'delta', 'echo'];
+                        var cont = document.getElementById('myBar');
+
+                        // create ul element and set the attributes.
+                        var ul = document.createElement('ul');
+                        ul.setAttribute('style', 'padding: 0; margin: 0;');
+                        ul.setAttribute('id', 'theList');
+                        for (const key in datas) {
+                            //console.log(`${key}: ${datas[key]}`);
+                            var li = document.createElement('li');     // create li element.
+                            li.innerHTML = key+" : "+datas[key][0]+"/"+datas[key][1];      // assigning text to li using array value.
+                            li.setAttribute('style', 'display: block;font-weight:bold;');   // remove the bullets.
+                            ul.appendChild(li);     // append li to ul.
+                        }
+
+                        cont.appendChild(ul);       // add list to the container.
+
+                    },
+
+
+                error: function(error)
+
+                {
+
+                    console.log(error);
+
+                }
+
+            });
+
+        }
+
+        function graphicTravailSocial(){
+            document.getElementById('flot-placeholder').replaceChildren();
+            document.getElementById('flot-placeholder').style.width = "500px";
+            document.getElementById('flot-placeholder').style.height = "300px";
+
+            var f_url = "{{ url('/graphic/10/191/739/738/1494') }}"
+            $.ajax({
+
+                url: f_url,
+
+                method: "GET",
+
+                dataType: 'text', 
+
+                contentType:false,
+
+                processData: false,
+
+
+
+                success: function(response)
+
+                {
+                    var datas = JSON.parse(response);
+                    if(document.getElementById("flot-placeholder"))
+
+                    {
+                        
+                        var dataset = [
+                            {
+                                label: "Expatriés",
+                                data: datas[1]
+                            },
+                            {
+                                label: "Nationaux",
+                                data: datas[2]
+                            },
+                            {
+                                label: "Total Expatriés & Nationaux",
+                                data: datas[3]
+                            }
+
+                        ];
+
+                        var options = {
+                            series: {  
+                                lines: { show: true },      
+                                points: {
+                                    radius: 3,
+                                    show: true
+                                }
+                            }
+                        };
+                        $.plot($("#flot-placeholder"), dataset, options);
+
+                    }
+
+                },
+
+                error: function(error)
+
+                {
+
+                    console.log(error);
+
+                }
+
+                })
+        }
+
+        function graphicAudit(){
+            document.getElementById('flot-placeholder').replaceChildren();
+            document.getElementById('flot-placeholder').style.width = "350px";
+            document.getElementById('flot-placeholder').style.height = "0px";
+        }
+
+        function graphicReforme(){
+            document.getElementById('flot-placeholder').replaceChildren();
+            document.getElementById('flot-placeholder').style.width = "350px";
+            document.getElementById('flot-placeholder').style.height = "0px";
+        }
+        /************************       END    Fonction publique             *********************/
+        
+
+
+        function showMoreDetails(infoId)
         {
 
             var formData = new FormData();
@@ -666,10 +935,7 @@
 
         }
 
-
-
         function showMoreLevel(infoId)
-
         {
 
             var formData = new FormData();

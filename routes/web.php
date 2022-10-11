@@ -32,6 +32,13 @@ Auth::routes([
 
 Route::get('/dashboard', 'HomeController@index')->name('home');
 Route::get('/dash/stat','HomeController@stat');
+
+
+Route::get('graphic/{id_domain}/{id_indicator}/{id_first}/{id_second}/{id_third}','HomeController@graphic')->name('graphic');
+Route::get('listSousdomain/{id_domain}','HomeController@listSousdomain')->name('listSousdomain');
+
+
+
 Route::prefix('create')->group(function(){
     Route::get('structure','Structure\StructureController@form')->name('form.structure');
     Route::get('level','Level\LevelController@form')->name('form.level');

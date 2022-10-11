@@ -371,8 +371,4 @@ class ReadController extends Controller
         return array_keys($a)[0];
     }
 
-    public function graphique($id_domain,$id_level,$domain )
-    {
-
-    }
 }
