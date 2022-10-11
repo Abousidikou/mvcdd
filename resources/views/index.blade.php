@@ -674,6 +674,57 @@
             document.getElementById('flot-placeholder').style.width = "500px";
             document.getElementById('flot-placeholder').style.height = "300px";
 
+            var list_url = "{{ url('/listSousdomain/11') }}"
+            $.ajax({
+
+                url: list_url,
+
+                    method: "GET",
+
+                    dataType: 'text', 
+
+                    contentType:false,
+
+                    processData: false,
+
+
+
+                    success: function(response)
+
+                    {
+                       
+                        var datas = JSON.parse(response);
+                        
+                        document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
+                        var cont = document.getElementById('myBar');
+
+                        // create ul element and set the attributes.
+                        var ul = document.createElement('ul');
+                        ul.setAttribute('style', 'padding: 0; margin: 0;');
+                        ul.setAttribute('id', 'theList');
+                        for (const key in datas) {
+                            //console.log(`${key}: ${datas[key]}`);
+                            var li = document.createElement('li');     // create li element.
+                            li.innerHTML = key+" : "+datas[key][0]+"/"+datas[key][1];      // assigning text to li using array value.
+                            li.setAttribute('style', 'display: block;font-weight:bold;');   // remove the bullets.
+                            ul.appendChild(li);     // append li to ul.
+                        }
+
+                        cont.appendChild(ul);       // add list to the container.
+
+                    },
+
+
+                error: function(error)
+
+                {
+
+                    console.log(error);
+
+                }
+
+            });
+
             var f_url = "{{ url('/graphic/11/211/1404/1405/1406') }}"
             $.ajax({
 
@@ -740,7 +791,17 @@
 
             });
 
-            var list_url = "{{ url('/listSousdomain/11') }}"
+            
+
+        }
+
+        function graphicTravailSocial(){
+            document.getElementById('flot-placeholder').replaceChildren();
+            document.getElementById('myBar').replaceChildren();
+            document.getElementById('flot-placeholder').style.width = "500px";
+            document.getElementById('flot-placeholder').style.height = "300px";
+
+            var list_url = "{{ url('/listSousdomain/10') }}"
             $.ajax({
 
                 url: list_url,
@@ -790,13 +851,6 @@
                 }
 
             });
-
-        }
-
-        function graphicTravailSocial(){
-            document.getElementById('flot-placeholder').replaceChildren();
-            document.getElementById('flot-placeholder').style.width = "500px";
-            document.getElementById('flot-placeholder').style.height = "300px";
 
             var f_url = "{{ url('/graphic/10/191/739/738/1494') }}"
             $.ajax({
@@ -862,18 +916,123 @@
                 }
 
                 })
+
+
+            
         }
 
         function graphicAudit(){
             document.getElementById('flot-placeholder').replaceChildren();
+            document.getElementById('myBar').replaceChildren();
             document.getElementById('flot-placeholder').style.width = "350px";
             document.getElementById('flot-placeholder').style.height = "0px";
+            var list_url = "{{ url('/listSousdomain/13') }}"
+            $.ajax({
+
+                url: list_url,
+
+                    method: "GET",
+
+                    dataType: 'text', 
+
+                    contentType:false,
+
+                    processData: false,
+
+
+
+                    success: function(response)
+
+                    {
+                       
+                        var datas = JSON.parse(response);
+                        
+                        document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
+                        var cont = document.getElementById('myBar');
+
+                        // create ul element and set the attributes.
+                        var ul = document.createElement('ul');
+                        ul.setAttribute('style', 'padding: 0; margin: 0;');
+                        ul.setAttribute('id', 'theList');
+                        for (const key in datas) {
+                            //console.log(`${key}: ${datas[key]}`);
+                            var li = document.createElement('li');     // create li element.
+                            li.innerHTML = key+" : "+datas[key][0]+"/"+datas[key][1];      // assigning text to li using array value.
+                            li.setAttribute('style', 'display: block;font-weight:bold;');   // remove the bullets.
+                            ul.appendChild(li);     // append li to ul.
+                        }
+
+                        cont.appendChild(ul);       // add list to the container.
+
+                    },
+
+
+                error: function(error)
+
+                {
+
+                    console.log(error);
+
+                }
+
+            });
         }
 
         function graphicReforme(){
             document.getElementById('flot-placeholder').replaceChildren();
+            document.getElementById('myBar').replaceChildren();
             document.getElementById('flot-placeholder').style.width = "350px";
             document.getElementById('flot-placeholder').style.height = "0px";
+            var list_url = "{{ url('/listSousdomain/12') }}"
+            $.ajax({
+
+                url: list_url,
+
+                    method: "GET",
+
+                    dataType: 'text', 
+
+                    contentType:false,
+
+                    processData: false,
+
+
+
+                    success: function(response)
+
+                    {
+                       
+                        var datas = JSON.parse(response);
+                        
+                        document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
+                        var cont = document.getElementById('myBar');
+
+                        // create ul element and set the attributes.
+                        var ul = document.createElement('ul');
+                        ul.setAttribute('style', 'padding: 0; margin: 0;');
+                        ul.setAttribute('id', 'theList');
+                        for (const key in datas) {
+                            //console.log(`${key}: ${datas[key]}`);
+                            var li = document.createElement('li');     // create li element.
+                            li.innerHTML = key+" : "+datas[key][0]+"/"+datas[key][1];      // assigning text to li using array value.
+                            li.setAttribute('style', 'display: block;font-weight:bold;');   // remove the bullets.
+                            ul.appendChild(li);     // append li to ul.
+                        }
+
+                        cont.appendChild(ul);       // add list to the container.
+
+                    },
+
+
+                error: function(error)
+
+                {
+
+                    console.log(error);
+
+                }
+
+            });
         }
         /************************       END    Fonction publique             *********************/
         
