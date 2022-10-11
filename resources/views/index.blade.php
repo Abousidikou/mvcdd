@@ -520,7 +520,7 @@
 
             <div class="header">
 
-                <h2>SOUS-DOMAINES</h2>
+                <h2>INDICATEURS RENSEIGNÉES</h2>
 
             </div>
 
@@ -715,10 +715,12 @@
 
                         var options = {
                             series: {  
-                                lines: { show: true },      
-                                points: {
-                                    radius: 3,
+                                bars: {
                                     show: true
+                                },     
+                                bars: {
+                                    align: "center",
+                                    barWidth: 0.5
                                 }
                             }
                         };
@@ -759,7 +761,7 @@
                        
                         var datas = JSON.parse(response);
                         
-                        var arr = ['alpha', 'bravo', 'charlie', 'delta', 'echo'];
+                        document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
                         var cont = document.getElementById('myBar');
 
                         // create ul element and set the attributes.
@@ -815,6 +817,7 @@
 
                 {
                     var datas = JSON.parse(response);
+                    document.getElementById('label').innerHTML = "Evolution du nombre de contrat de travail visé ";
                     if(document.getElementById("flot-placeholder"))
 
                     {
