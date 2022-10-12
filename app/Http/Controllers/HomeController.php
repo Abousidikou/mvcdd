@@ -140,8 +140,19 @@ class HomeController extends Controller
         return json_encode($dataStatArray);
     }
 
+
+    public function allgrahics(){
+        $dataToSend = [];
+        $func = $this->graphic(11,211,1404,1405,1406);
+        $trav = $this->graphic(10,191,739,738,1494);
+        $dataToSend[] = $func;
+        $dataToSend[] = $trav;
+        return json_encode($dataToSend);
+    }
+
     public function graphic($id_domain,$id_indicator,$id_first,$id_second,$id_third)
     {
+
         $allData = Data::all();
 
 
@@ -203,15 +214,15 @@ class HomeController extends Controller
         $dataToSend[] = $first;
         $dataToSend[] = $second;
         $dataToSend[] = $third;
-        return json_encode($dataToSend);
+        return $dataToSend;
     }
 
-    public function listSousdomain($id_domain){
+    public function listSousdomain(){
         // Variables
-/*         $id_func = 11;
+        $id_func = 11;
         $id_trav = 10;
-        $id_reform = 11;
-        $id_audit = 12;  */
+        $id_reform = 12;
+        $id_audit = 13; 
         // get SubDomain 
         $dataToSend = [];
         $functionPublic = [];
@@ -223,7 +234,7 @@ class HomeController extends Controller
         $indicators = Indicators::all();
         foreach ($indicators as  $line) {
 
-            if($line->subdomain->domain->id == $id_domain){
+            if($line->subdomain->domain->id == $id_func){
                 $dataExist = Data::where('id_indicator',$line->id)->first();
                 if($dataExist != null){
                     if(array_key_exists($line->subdomain->wording,$functionPublic)){
@@ -239,7 +250,7 @@ class HomeController extends Controller
                         $functionPublic[$line->subdomain->wording] = [0,1];
                     }
                 }
-            }/* elseif ($line->subdomain->domain->id == $id_trav){
+            }elseif ($line->subdomain->domain->id == $id_trav){
                 $dataExist = Data::where('id_indicator',$line->id)->first();
                 if($dataExist != null){
                     if(array_key_exists($line->subdomain->wording,$travailSocial)){
@@ -287,13 +298,13 @@ class HomeController extends Controller
                         $reforme[$line->subdomain->wording] = [0,1];
                     }
                 }
-            } */
+            }
         }
 
-        /* $dataToSend[] = $travailSocial;
+        $dataToSend[] = $travailSocial;
         $dataToSend[] = $functionPublic;
         $dataToSend[] = $reforme;
-        $dataToSend[] = $audit; */
-        return json_encode($functionPublic);
+        $dataToSend[] = $audit;
+        return json_encode($dataToSend);
     }
 }

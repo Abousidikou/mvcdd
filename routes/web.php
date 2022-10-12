@@ -34,8 +34,8 @@ Route::get('/dashboard', 'HomeController@index')->name('home');
 Route::get('/dash/stat','HomeController@stat');
 
 
-Route::get('graphic/{id_domain}/{id_indicator}/{id_first}/{id_second}/{id_third}','HomeController@graphic')->name('graphic');
-Route::get('listSousdomain/{id_domain}','HomeController@listSousdomain')->name('listSousdomain');
+Route::get('allgrahics','HomeController@allgrahics')->name('allgrahics');
+Route::get('listSousdomain','HomeController@listSousdomain')->name('listSousdomain');
 
 
 

@@ -568,6 +568,8 @@
 
     <script>
 
+        var domains = [];
+        var datas = [];
         window.onload = function(){
             var server_url = '{{url("/dash/stat")}}';
             $.ajax({
@@ -622,6 +624,121 @@
 
             })
 
+            var list_url = "{{ url('/listSousdomain') }}"
+            $.ajax({
+
+                url: list_url,
+
+                    method: "GET",
+
+                    dataType: 'text', 
+
+                    contentType:false,
+
+                    processData: false,
+
+
+
+                    success: function(response)
+
+                    {
+                       
+                        domains = JSON.parse(response);
+                        //console.log(domains);
+
+                        var cont = document.getElementById('myBar');
+                        var ul = document.createElement('ul');
+                        ul.setAttribute('style', 'padding: 0; margin: 0;');
+                        ul.setAttribute('id', 'theList');
+                        for (const [key, obj1] of Object.entries(domains[3])) {
+                            var li = document.createElement('li');     // create li element.
+                            li.innerHTML = "<strong style='font-weight:bold;'>"+key+"</strong>"+" : "+obj1[0]+"/"+obj1[1];      // assigning text to li using array value.
+                            li.setAttribute('style', 'display: block;');   // remove the bullets.
+                            ul.appendChild(li);     // append li to ul.
+                        }
+
+                        cont.appendChild(ul);       // add list to the container. */
+
+                    },
+
+
+                error: function(error)
+
+                {
+
+                    console.log(error);
+
+                }
+
+            });
+
+            var f_url = "{{ url('/allgrahics') }}"
+            $.ajax({
+
+                url: f_url,
+
+                method: "GET",
+
+                dataType: 'text', 
+
+                contentType:false,
+
+                processData: false,
+
+
+
+                success: function(response)
+
+                {
+                    datas = JSON.parse(response);
+                    //console.log(datas);
+                    /* if(document.getElementById("flot-placeholder"))
+
+                    {
+                        
+                        var dataset = [
+                            {
+                                label: "ACE",
+                                data: datas[1]
+                            },
+                            {
+                                label: "APE",
+                                data: datas[2]
+                            },
+                            {
+                                label: "Total Statuts",
+                                data: datas[3]
+                            }
+
+                        ];
+
+                        var options = {
+                            series: {  
+                                bars: {
+                                    show: true
+                                },     
+                                bars: {
+                                    align: "center",
+                                    barWidth: 0.5
+                                }
+                            }
+                        };
+                        $.plot($("#flot-placeholder"), dataset, options);
+
+                    } */
+
+                },
+
+                error: function(error)
+
+                {
+
+                    console.log(error);
+
+                }
+
+            });
+
         }
 
 
@@ -674,126 +791,111 @@
             document.getElementById('flot-placeholder').style.width = "500px";
             document.getElementById('flot-placeholder').style.height = "300px";
 
-            var list_url = "{{ url('/listSousdomain/11') }}"
-            $.ajax({
+            document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
+            var cont = document.getElementById('myBar');
 
-                url: list_url,
+            var ul = document.createElement('ul');
+            ul.setAttribute('style', 'padding: 0; margin: 0;');
+            ul.setAttribute('id', 'theList');
+            for (const [key, obj1] of Object.entries(domains[1])) {
+                var li = document.createElement('li');     // create li element.
+                li.innerHTML = "<strong style='font-weight:bold;'>"+key+"</strong>"+" : "+obj1[0]+"/"+obj1[1];      // assigning text to li using array value.
+                li.setAttribute('style', 'display: block;');   // remove the bullets.
+                ul.appendChild(li);     // append li to ul.
+            }
 
-                    method: "GET",
-
-                    dataType: 'text', 
-
-                    contentType:false,
-
-                    processData: false,
+            cont.appendChild(ul);       // add list to the container. */
 
 
 
-                    success: function(response)
-
-                    {
-                       
-                        var datas = JSON.parse(response);
-                        
-                        document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
-                        var cont = document.getElementById('myBar');
-
-                        // create ul element and set the attributes.
-                        var ul = document.createElement('ul');
-                        ul.setAttribute('style', 'padding: 0; margin: 0;');
-                        ul.setAttribute('id', 'theList');
-                        for (const key in datas) {
-                            //console.log(`${key}: ${datas[key]}`);
-                            var li = document.createElement('li');     // create li element.
-                            li.innerHTML = key+" : "+datas[key][0]+"/"+datas[key][1];      // assigning text to li using array value.
-                            li.setAttribute('style', 'display: block;font-weight:bold;');   // remove the bullets.
-                            ul.appendChild(li);     // append li to ul.
-                        }
-
-                        cont.appendChild(ul);       // add list to the container.
-
+            // graphic bar chart
+            /* var data1 = GenerateSeries(0);
+     
+            console.log(data1);       
+            var options = {
+                    series:{
+                        bars:{show: true}
                     },
-
-
-                error: function(error)
-
-                {
-
-                    console.log(error);
-
-                }
-
-            });
-
-            var f_url = "{{ url('/graphic/11/211/1404/1405/1406') }}"
-            $.ajax({
-
-                url: f_url,
-
-                method: "GET",
-
-                dataType: 'text', 
-
-                contentType:false,
-
-                processData: false,
-
-
-
-                success: function(response)
-
-                {
-                    var datas = JSON.parse(response);
-                    if(document.getElementById("flot-placeholder"))
+                    bars:{
+                        barWidth:0.8
+                    },            
+                    grid:{
+                        backgroundColor: { colors: ["#919191", "#141414"] }
+                    }
+            };
+        
+            $.plot($("#flot-placeholder"), [datas[0][]], options);  */ 
+            
+            if(document.getElementById("flot-placeholder"))
 
                     {
                         
                         var dataset = [
                             {
                                 label: "ACE",
-                                data: datas[1]
+                                data: datas[0][1]
                             },
                             {
                                 label: "APE",
-                                data: datas[2]
+                                data: datas[0][2]
                             },
                             {
                                 label: "Total Statuts",
-                                data: datas[3]
+                                data: datas[0][3]
                             }
 
                         ];
 
                         var options = {
                             series: {  
-                                bars: {
+                                lines: {
                                     show: true
-                                },     
-                                bars: {
-                                    align: "center",
-                                    barWidth: 0.5
+                                },
+                                points: {
+                                    radius: 3,
+                                    fill: true,
+                                    show: true
                                 }
+                            },
+                            xaxis: {
+                                axisLabel: "Année",
+                                axisLabelFontFamily: 'Verdana, Arial'
+                            },
+                            yaxis: {
+                                axisLabel: "Nombre",
+                                axisLabelFontFamily: 'Verdana, Arial'
+                            },
+                            grid: {
+                                hoverable: true,
+                                clickable: true
                             }
                         };
                         $.plot($("#flot-placeholder"), dataset, options);
 
                     }
 
-                },
-
-                error: function(error)
-
-                {
-
-                    console.log(error);
-
-                }
-
-            });
-
-            
-
         }
+
+
+        
+ 
+    
+
+        function GenerateSeries(added){
+                var data = [];
+                var start = 100 + added;
+                var end = 200 + added;
+        
+                for(i=1;i<=20;i++){        
+                    var d = Math.floor(Math.random() * (end - start + 1) + start);        
+                    data.push([i, d]);
+                    start++;
+                    end++;
+                }
+        
+                return data;
+            }
+        
 
         function graphicTravailSocial(){
             document.getElementById('flot-placeholder').replaceChildren();
@@ -801,123 +903,72 @@
             document.getElementById('flot-placeholder').style.width = "500px";
             document.getElementById('flot-placeholder').style.height = "300px";
 
-            var list_url = "{{ url('/listSousdomain/10') }}"
-            $.ajax({
+            document.getElementById('label').innerHTML = "Evolution du nombre de contrat de travail visé ";
+            var cont = document.getElementById('myBar');
 
-                url: list_url,
+            var ul = document.createElement('ul');
+            ul.setAttribute('style', 'padding: 0; margin: 0;');
+            ul.setAttribute('id', 'theList');
+            for (const [key, obj1] of Object.entries(domains[0])) {
+                var li = document.createElement('li');     // create li element.
+                li.innerHTML = "<strong style='font-weight:bold;'>"+key+"</strong>"+" : "+obj1[0]+"/"+obj1[1];      // assigning text to li using array value.
+                li.setAttribute('style', 'display: block;');   // remove the bullets.
+                ul.appendChild(li);     // append li to ul.
+            }
 
-                    method: "GET",
-
-                    dataType: 'text', 
-
-                    contentType:false,
-
-                    processData: false,
-
-
-
-                    success: function(response)
-
-                    {
-                       
-                        var datas = JSON.parse(response);
-                        
-                        document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
-                        var cont = document.getElementById('myBar');
-
-                        // create ul element and set the attributes.
-                        var ul = document.createElement('ul');
-                        ul.setAttribute('style', 'padding: 0; margin: 0;');
-                        ul.setAttribute('id', 'theList');
-                        for (const key in datas) {
-                            //console.log(`${key}: ${datas[key]}`);
-                            var li = document.createElement('li');     // create li element.
-                            li.innerHTML = key+" : "+datas[key][0]+"/"+datas[key][1];      // assigning text to li using array value.
-                            li.setAttribute('style', 'display: block;font-weight:bold;');   // remove the bullets.
-                            ul.appendChild(li);     // append li to ul.
-                        }
-
-                        cont.appendChild(ul);       // add list to the container.
-
-                    },
-
-
-                error: function(error)
-
-                {
-
-                    console.log(error);
-
-                }
-
-            });
-
-            var f_url = "{{ url('/graphic/10/191/739/738/1494') }}"
-            $.ajax({
-
-                url: f_url,
-
-                method: "GET",
-
-                dataType: 'text', 
-
-                contentType:false,
-
-                processData: false,
+            cont.appendChild(ul);       // add list to the container. */
 
 
 
-                success: function(response)
 
-                {
-                    var datas = JSON.parse(response);
-                    document.getElementById('label').innerHTML = "Evolution du nombre de contrat de travail visé ";
-                    if(document.getElementById("flot-placeholder"))
+
+            if(document.getElementById("flot-placeholder"))
 
                     {
                         
                         var dataset = [
                             {
-                                label: "Expatriés",
-                                data: datas[1]
+                                label: "ACE",
+                                data: datas[1][1]
                             },
                             {
-                                label: "Nationaux",
-                                data: datas[2]
+                                label: "APE",
+                                data: datas[1][2]
                             },
                             {
-                                label: "Total Expatriés & Nationaux",
-                                data: datas[3]
+                                label: "Total Statuts",
+                                data: datas[1][3]
                             }
 
                         ];
 
                         var options = {
                             series: {  
-                                lines: { show: true },      
+                                lines: {
+                                    show: true
+                                },
                                 points: {
                                     radius: 3,
+                                    fill: true,
                                     show: true
                                 }
+                            },
+                            xaxis: {
+                                axisLabel: "Année",
+                                axisLabelFontFamily: 'Verdana, Arial'
+                            },
+                            yaxis: {
+                                axisLabel: "Nombre",
+                                axisLabelFontFamily: 'Verdana, Arial'
+                            },
+                            grid: {
+                                hoverable: true,
+                                clickable: true
                             }
                         };
                         $.plot($("#flot-placeholder"), dataset, options);
 
                     }
-
-                },
-
-                error: function(error)
-
-                {
-
-                    console.log(error);
-
-                }
-
-                })
-
-
             
         }
 
@@ -926,56 +977,22 @@
             document.getElementById('myBar').replaceChildren();
             document.getElementById('flot-placeholder').style.width = "350px";
             document.getElementById('flot-placeholder').style.height = "0px";
-            var list_url = "{{ url('/listSousdomain/13') }}"
-            $.ajax({
 
-                url: list_url,
+            document.getElementById('label').innerHTML = "Nombre de séminaire et formation de l’INFOSEC";
+            
+            var cont = document.getElementById('myBar');
+            var ul = document.createElement('ul');
+            ul.setAttribute('style', 'padding: 0; margin: 0;');
+            ul.setAttribute('id', 'theList');
+            for (const [key, obj1] of Object.entries(domains[3])) {
+                var li = document.createElement('li');     // create li element.
+                li.innerHTML = "<strong style='font-weight:bold;'>"+key+"</strong>"+" : "+obj1[0]+"/"+obj1[1];      // assigning text to li using array value.
+                li.setAttribute('style', 'display: block;');   // remove the bullets.
+                ul.appendChild(li);     // append li to ul.
+            }
 
-                    method: "GET",
-
-                    dataType: 'text', 
-
-                    contentType:false,
-
-                    processData: false,
-
-
-
-                    success: function(response)
-
-                    {
-                       
-                        var datas = JSON.parse(response);
-                        
-                        document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
-                        var cont = document.getElementById('myBar');
-
-                        // create ul element and set the attributes.
-                        var ul = document.createElement('ul');
-                        ul.setAttribute('style', 'padding: 0; margin: 0;');
-                        ul.setAttribute('id', 'theList');
-                        for (const key in datas) {
-                            //console.log(`${key}: ${datas[key]}`);
-                            var li = document.createElement('li');     // create li element.
-                            li.innerHTML = key+" : "+datas[key][0]+"/"+datas[key][1];      // assigning text to li using array value.
-                            li.setAttribute('style', 'display: block;font-weight:bold;');   // remove the bullets.
-                            ul.appendChild(li);     // append li to ul.
-                        }
-
-                        cont.appendChild(ul);       // add list to the container.
-
-                    },
-
-
-                error: function(error)
-
-                {
-
-                    console.log(error);
-
-                }
-
-            });
+            cont.appendChild(ul);       // add list to the container. */
+            
         }
 
         function graphicReforme(){
@@ -983,56 +1000,23 @@
             document.getElementById('myBar').replaceChildren();
             document.getElementById('flot-placeholder').style.width = "350px";
             document.getElementById('flot-placeholder').style.height = "0px";
-            var list_url = "{{ url('/listSousdomain/12') }}"
-            $.ajax({
+            
 
-                url: list_url,
+            document.getElementById('label').innerHTML = "Nombre de séminaire et formation de l’INFOSEC";
+            var cont = document.getElementById('myBar');
 
-                    method: "GET",
+            var ul = document.createElement('ul');
+            ul.setAttribute('style', 'padding: 0; margin: 0;');
+            ul.setAttribute('id', 'theList');
+            for (const [key, obj1] of Object.entries(domains[2])) {
+                var li = document.createElement('li');     // create li element.
+                li.innerHTML = "<strong style='font-weight:bold;'>"+key+"</strong>"+" : "+obj1[0]+"/"+obj1[1];      // assigning text to li using array value.
+                li.setAttribute('style', 'display: block;');   // remove the bullets.
+                ul.appendChild(li);     // append li to ul.
+            }
 
-                    dataType: 'text', 
-
-                    contentType:false,
-
-                    processData: false,
-
-
-
-                    success: function(response)
-
-                    {
-                       
-                        var datas = JSON.parse(response);
-                        
-                        document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
-                        var cont = document.getElementById('myBar');
-
-                        // create ul element and set the attributes.
-                        var ul = document.createElement('ul');
-                        ul.setAttribute('style', 'padding: 0; margin: 0;');
-                        ul.setAttribute('id', 'theList');
-                        for (const key in datas) {
-                            //console.log(`${key}: ${datas[key]}`);
-                            var li = document.createElement('li');     // create li element.
-                            li.innerHTML = key+" : "+datas[key][0]+"/"+datas[key][1];      // assigning text to li using array value.
-                            li.setAttribute('style', 'display: block;font-weight:bold;');   // remove the bullets.
-                            ul.appendChild(li);     // append li to ul.
-                        }
-
-                        cont.appendChild(ul);       // add list to the container.
-
-                    },
-
-
-                error: function(error)
-
-                {
-
-                    console.log(error);
-
-                }
-
-            });
+            cont.appendChild(ul);       // add list to the container. */
+            
         }
         /************************       END    Fonction publique             *********************/
         
