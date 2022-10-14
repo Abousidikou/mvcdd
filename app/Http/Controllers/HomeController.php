@@ -87,9 +87,31 @@ class HomeController extends Controller
             $info->date_end = date_format(date_create($info->date_end),'d-m-Y');
         }
 
+        $audit = [];
+        $indicators = Indicators::all();
+        foreach ($indicators as  $line) {
 
-    
-        return view('index',compact('numberOfIndicators','numberOfTypes','numberOfLevels','numberOfData','dataStatArray','infos'));
+            if($line->subdomain->domain->id == 10){
+                $dataExist = Data::where('id_indicator',$line->id)->first();
+                if($dataExist != null){
+                    if(array_key_exists($line->subdomain->wording,$audit)){
+                        $audit[$line->subdomain->wording][0] += 1; 
+                        $audit[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $audit[$line->subdomain->wording] = [1,1];
+                    }
+                }else{
+                    if(array_key_exists($line->subdomain->wording,$audit)){
+                        $audit[$line->subdomain->wording][1] += 1; 
+                    }else{
+                        $audit[$line->subdomain->wording] = [0,1];
+                    }
+                }
+            }
+        }
+
+        $audit_graph = $this->graphic(10,188,1383,1957,1958);
+        return view('index',compact('audit_graph','audit','numberOfIndicators','numberOfTypes','numberOfLevels','numberOfData','dataStatArray','infos'));
     }
 
     public function redirect() 
@@ -141,12 +163,25 @@ class HomeController extends Controller
     }
 
 
-    public function allgrahics(){
+    public function auditANDtravail(){
+        $dataToSend = [];
+        $audit = $this->graphic(10,188,1383,1957,1958);
+        $reform = $this->graphic(12,233,1397,903,904);
+        
+        $dataToSend[] = $audit;
+        $dataToSend[] = $reform;
+
+        
+        return json_encode($dataToSend);
+    }
+
+    public function funcANDreform(){
         $dataToSend = [];
         $func = $this->graphic(11,211,1404,1405,1406);
         $trav = $this->graphic(10,191,739,738,1494);
         $dataToSend[] = $func;
         $dataToSend[] = $trav;
+        
         return json_encode($dataToSend);
     }
 
@@ -174,12 +209,13 @@ class HomeController extends Controller
         //dd($yearArray,$dACE,$dAPE,$dTotal);
         foreach($allData as $data)
         {
-            //dd($data->indicator->levels[0]);
+            //dd($data->indicator->subdomain->domain->id == $id_domain);
             
             if($data->indicator->subdomain->domain->id == $id_domain){
                 if($data->indicator->id == $id_indicator){
                     $year_id = array_search($data->year,$yearArray);
                     if($year_id != false){
+                        //dd($year_id,$yearArray,$data->year,$data->value);
                         if(DB::table('data_levels')->where('id_data',$data->id)->where('id_level',$id_first)->first() != null){
                             $d1[$year_id] = $d1[$year_id] + (int)$data->value;
                         }elseif (DB::table('data_levels')->where('id_data',$data->id)->where('id_level',$id_second)->first() != null) {
@@ -194,7 +230,7 @@ class HomeController extends Controller
 
         }
 
-        $first = [];
+        /* $first = [];
         $second = [];
         $third = [];
         for ($x = 0; $x < 10; $x++) {
@@ -210,10 +246,11 @@ class HomeController extends Controller
             $d[] = $yearArray[$x];
             $d[] = $d3[$x];
             $third[] = $d;
-        } 
-        $dataToSend[] = $first;
-        $dataToSend[] = $second;
-        $dataToSend[] = $third;
+        }  */
+        $dataToSend[] = array_reverse($yearArray);
+        $dataToSend[] = array_reverse($d1);
+        $dataToSend[] = array_reverse($d2);
+        $dataToSend[] = array_reverse($d3);
         return $dataToSend;
     }
 

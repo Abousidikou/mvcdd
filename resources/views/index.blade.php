@@ -403,7 +403,8 @@
 <div class="row clearfix">
 
     <!-- Tableau-graphique et derniere ligne ajoutées de board Info -->
-
+    
+    
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
         <div class="card">
 
@@ -415,7 +416,7 @@
 
             <div class="body">
 
-                <div id="flot-placeholder"></div>
+                <div id=""><canvas id="flot-placeholder" width="500" height="300"></canvas></div>
 
             </div>
 
@@ -569,7 +570,10 @@
     <script>
 
         var domains = [];
-        var datas = [];
+        var datas_audit = [];
+        var datas_func = [];
+
+
         window.onload = function(){
             var server_url = '{{url("/dash/stat")}}';
             $.ajax({
@@ -647,6 +651,7 @@
                         //console.log(domains);
 
                         var cont = document.getElementById('myBar');
+                        document.getElementById('myBar').style.height = "250px";
                         var ul = document.createElement('ul');
                         ul.setAttribute('style', 'padding: 0; margin: 0;');
                         ul.setAttribute('id', 'theList');
@@ -672,10 +677,10 @@
 
             });
 
-            var f_url = "{{ url('/allgrahics') }}"
+           var audit_trav_url = "{{ url('/auditANDtravail') }}"
             $.ajax({
 
-                url: f_url,
+                url: audit_trav_url,
 
                 method: "GET",
 
@@ -690,42 +695,113 @@
                 success: function(response)
 
                 {
-                    datas = JSON.parse(response);
-                    //console.log(datas);
-                    /* if(document.getElementById("flot-placeholder"))
+                    datas_audit = JSON.parse(response);
+                    document.getElementById('flot-placeholder').replaceChildren();
+                    document.getElementById('label').innerHTML = "Evolution du nombre de plaintes";
+                    console.log('audit and travail : ',datas_audit);
+                    
+                    if(document.getElementById("flot-placeholder"))
 
                     {
-                        
-                        var dataset = [
-                            {
-                                label: "ACE",
-                                data: datas[1]
-                            },
-                            {
-                                label: "APE",
-                                data: datas[2]
-                            },
-                            {
-                                label: "Total Statuts",
-                                data: datas[3]
-                            }
 
-                        ];
-
-                        var options = {
-                            series: {  
-                                bars: {
-                                    show: true
-                                },     
-                                bars: {
-                                    align: "center",
-                                    barWidth: 0.5
+                        const ctx = document.getElementById('flot-placeholder').getContext('2d');
+                        const dataer = {
+                            labels: datas_audit[0][0],
+                            datasets: [
+                                {
+                                label: 'Structures du Ministère',
+                                data: datas_audit[0][1],
+                                borderColor: "#cf0610",
+                                fill: false,
+                                cubicInterpolationMode: 'monotone',
+                                tension: 0.4
+                                }, {
+                                label: 'Individuelles',
+                                data: datas_audit[0][2],
+                                borderColor: "#1b08c9",
+                                fill: false,
+                                tension: 0.4
+                                }, {
+                                label: 'Collectives',
+                                data: datas_audit[0][2],
+                                borderColor: "#08c945",
+                                fill: false
                                 }
-                            }
+                            ]
                         };
-                        $.plot($("#flot-placeholder"), dataset, options);
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: dataer,
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Evolution du nombre de plaintes'
+                                },
+                                },
+                                interaction: {
+                                intersect: false,
+                                },
+                                scales: {
+                                x: {
+                                    display: true,
+                                    title: {
+                                    display: true
+                                    }
+                                },
+                                y: {
+                                    display: true,
+                                    title: {
+                                    display: true,
+                                    text: 'Value'
+                                    },
+                                    suggestedMin: -10,
+                                    suggestedMax: 200
+                                }
+                                }
+                            },
+                        });
+                            
 
-                    } */
+                    }
+                },
+
+                error: function(error)
+
+                {
+
+                    console.log(error);
+
+                }
+
+            });
+            
+
+            var func_reform_url = "{{ url('/funcANDreform') }}"
+            $.ajax({
+
+                url: func_reform_url,
+
+                method: "GET",
+
+                dataType: 'text', 
+
+                contentType:false,
+
+                processData: false,
+
+
+
+                success: function(response)
+
+                {
+                    datas_func = JSON.parse(response);
+                    document.getElementById('flot-placeholder').replaceChildren();
+                    document.getElementById('flot-placeholder').style.width = "500px";
+                    document.getElementById('flot-placeholder').style.height = "300px";
+                    console.log('func and reform : ',datas_func);
+                    
 
                 },
 
@@ -765,39 +841,21 @@
         
 
         /************************       Fonctions            *********************/
-        function tableTravailSocial(){
-
-        }
-
-        function tableFonctionPublique(){
-
-        }
-
-        function tableAudit(){
-
-        }
-
-        function tablegraphicReforme(){
-
-        }
-
-            
-
-       
-        function graphicFonctionPublique(){
-
+        function graphicAudit()
+        {
             document.getElementById('flot-placeholder').replaceChildren();
             document.getElementById('myBar').replaceChildren();
             document.getElementById('flot-placeholder').style.width = "500px";
             document.getElementById('flot-placeholder').style.height = "300px";
+            document.getElementById('myBar').style.height = "250px";
 
-            document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
+            document.getElementById('label').innerHTML = "Evolution du nombre de plaintes";
+            
             var cont = document.getElementById('myBar');
-
             var ul = document.createElement('ul');
             ul.setAttribute('style', 'padding: 0; margin: 0;');
             ul.setAttribute('id', 'theList');
-            for (const [key, obj1] of Object.entries(domains[1])) {
+            for (const [key, obj1] of Object.entries(domains[3])) {
                 var li = document.createElement('li');     // create li element.
                 li.innerHTML = "<strong style='font-weight:bold;'>"+key+"</strong>"+" : "+obj1[0]+"/"+obj1[1];      // assigning text to li using array value.
                 li.setAttribute('style', 'display: block;');   // remove the bullets.
@@ -807,101 +865,84 @@
             cont.appendChild(ul);       // add list to the container. */
 
 
-
-            // graphic bar chart
-            /* var data1 = GenerateSeries(0);
-     
-            console.log(data1);       
-            var options = {
-                    series:{
-                        bars:{show: true}
-                    },
-                    bars:{
-                        barWidth:0.8
-                    },            
-                    grid:{
-                        backgroundColor: { colors: ["#919191", "#141414"] }
-                    }
-            };
-        
-            $.plot($("#flot-placeholder"), [datas[0][]], options);  */ 
-            
             if(document.getElementById("flot-placeholder"))
 
-                    {
-                        
-                        var dataset = [
-                            {
-                                label: "ACE",
-                                data: datas[0][1]
-                            },
-                            {
-                                label: "APE",
-                                data: datas[0][2]
-                            },
-                            {
-                                label: "Total Statuts",
-                                data: datas[0][3]
+            {
+
+                const ctx = document.getElementById('flot-placeholder').getContext('2d');
+                const dataer = {
+                    labels: datas_audit[0][0],
+                    datasets: [
+                        {
+                        label: 'Structures du Ministère',
+                        data: datas_audit[0][1],
+                        borderColor: "#cf0610",
+                        fill: false,
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.4
+                        }, {
+                        label: 'Individuelles',
+                        data: datas_audit[0][2],
+                        borderColor: "#1b08c9",
+                        fill: false,
+                        tension: 0.4
+                        }, {
+                        label: 'Collectives',
+                        data: datas_audit[0][2],
+                        borderColor: "#08c945",
+                        fill: false
+                        }
+                    ]
+                };
+                new Chart(ctx, {
+                    type: 'line',
+                    data: dataer,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evolution du nombre de plaintes'
+                        },
+                        },
+                        interaction: {
+                        intersect: false,
+                        },
+                        scales: {
+                        x: {
+                            display: true,
+                            title: {
+                            display: true
                             }
-
-                        ];
-
-                        var options = {
-                            series: {  
-                                lines: {
-                                    show: true
-                                },
-                                points: {
-                                    radius: 3,
-                                    fill: true,
-                                    show: true
-                                }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                            display: true,
+                            text: 'Value'
                             },
-                            xaxis: {
-                                axisLabel: "Année",
-                                axisLabelFontFamily: 'Verdana, Arial'
-                            },
-                            yaxis: {
-                                axisLabel: "Nombre",
-                                axisLabelFontFamily: 'Verdana, Arial'
-                            },
-                            grid: {
-                                hoverable: true,
-                                clickable: true
-                            }
-                        };
-                        $.plot($("#flot-placeholder"), dataset, options);
+                            suggestedMin: -10,
+                            suggestedMax: 200
+                        }
+                        }
+                    },
+                });
+                    
 
-                    }
-
-        }
-
-
-        
- 
-    
-
-        function GenerateSeries(added){
-                var data = [];
-                var start = 100 + added;
-                var end = 200 + added;
-        
-                for(i=1;i<=20;i++){        
-                    var d = Math.floor(Math.random() * (end - start + 1) + start);        
-                    data.push([i, d]);
-                    start++;
-                    end++;
-                }
-        
-                return data;
             }
-        
+            
+        } 
 
-        function graphicTravailSocial(){
+
+
+
+        function graphicTravailSocial()
+        {
             document.getElementById('flot-placeholder').replaceChildren();
             document.getElementById('myBar').replaceChildren();
             document.getElementById('flot-placeholder').style.width = "500px";
             document.getElementById('flot-placeholder').style.height = "300px";
+            document.getElementById('myBar').style.height = "250px";
 
             document.getElementById('label').innerHTML = "Evolution du nombre de contrat de travail visé ";
             var cont = document.getElementById('myBar');
@@ -924,67 +965,88 @@
 
             if(document.getElementById("flot-placeholder"))
 
-                    {
-                        
-                        var dataset = [
-                            {
-                                label: "ACE",
-                                data: datas[1][1]
-                            },
-                            {
-                                label: "APE",
-                                data: datas[1][2]
-                            },
-                            {
-                                label: "Total Statuts",
-                                data: datas[1][3]
+            {
+
+                const ctx = document.getElementById('flot-placeholder').getContext('2d');
+                const dataer = {
+                    labels: datas_audit[1][0],
+                    datasets: [
+                        {
+                        label: 'Expatriés',
+                        data: datas_audit[1][1],
+                        borderColor: "#cf0610",
+                        fill: false,
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.4
+                        }, {
+                        label: 'Nationaux',
+                        data: datas_audit[1][2],
+                        borderColor: "#1b08c9",
+                        fill: false,
+                        tension: 0.4
+                        }, {
+                        label: 'Total',
+                        data: datas_audit[1][2],
+                        borderColor: "#08c945",
+                        fill: false
+                        }
+                    ]
+                };
+                new Chart(ctx, {
+                    type: 'line',
+                    data: dataer,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evolution du nombre de contrat de travail visé'
+                        },
+                        },
+                        interaction: {
+                        intersect: false,
+                        },
+                        scales: {
+                        x: {
+                            display: true,
+                            title: {
+                            display: true
                             }
-
-                        ];
-
-                        var options = {
-                            series: {  
-                                lines: {
-                                    show: true
-                                },
-                                points: {
-                                    radius: 3,
-                                    fill: true,
-                                    show: true
-                                }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                            display: true,
+                            text: 'Value'
                             },
-                            xaxis: {
-                                axisLabel: "Année",
-                                axisLabelFontFamily: 'Verdana, Arial'
-                            },
-                            yaxis: {
-                                axisLabel: "Nombre",
-                                axisLabelFontFamily: 'Verdana, Arial'
-                            },
-                            grid: {
-                                hoverable: true,
-                                clickable: true
-                            }
-                        };
-                        $.plot($("#flot-placeholder"), dataset, options);
+                            suggestedMin: -10,
+                            suggestedMax: 200
+                        }
+                        }
+                    },
+                });
+                    
 
-                    }
+            }
             
         }
 
-        function graphicAudit(){
+        function graphicFonctionPublique()
+        {
+
             document.getElementById('flot-placeholder').replaceChildren();
             document.getElementById('myBar').replaceChildren();
-            document.getElementById('flot-placeholder').style.width = "350px";
-            document.getElementById('flot-placeholder').style.height = "0px";
+            document.getElementById('flot-placeholder').style.width = "500px";
+            document.getElementById('flot-placeholder').style.height = "300px";
+            document.getElementById('myBar').style.height = "250px";
 
-            document.getElementById('label').innerHTML = "Nombre de séminaire et formation de l’INFOSEC";
-            
+            document.getElementById('label').innerHTML = "Evolution des effectifs des agents civils de l’état par statut";
             var cont = document.getElementById('myBar');
+
             var ul = document.createElement('ul');
             ul.setAttribute('style', 'padding: 0; margin: 0;');
             ul.setAttribute('id', 'theList');
-            for (const [key, obj1] of Object.entries(domains[3])) {
+            for (const [key, obj1] of Object.entries(domains[1])) {
                 var li = document.createElement('li');     // create li element.
                 li.innerHTML = "<strong style='font-weight:bold;'>"+key+"</strong>"+" : "+obj1[0]+"/"+obj1[1];      // assigning text to li using array value.
                 li.setAttribute('style', 'display: block;');   // remove the bullets.
@@ -992,17 +1054,91 @@
             }
 
             cont.appendChild(ul);       // add list to the container. */
+
+
+
             
+            if(document.getElementById("flot-placeholder"))
+
+            {
+
+                const ctx = document.getElementById('flot-placeholder').getContext('2d');
+                const dataer = {
+                    labels: datas_func[0][0],
+                    datasets: [
+                        {
+                        label: 'ACE',
+                        data: datas_func[0][1],
+                        borderColor: "#cf0610",
+                        fill: false,
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.4
+                        }, {
+                        label: 'APE',
+                        data: datas_func[0][2],
+                        borderColor: "#1b08c9",
+                        fill: false,
+                        tension: 0.4
+                        }, {
+                        label: 'Total',
+                        data: datas_func[0][2],
+                        borderColor: "#08c945",
+                        fill: false
+                        }
+                    ]
+                };
+                new Chart(ctx, {
+                    type: 'line',
+                    data: dataer,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evolution des effectifs des agents civils de l’état par statut'
+                        },
+                        },
+                        interaction: {
+                        intersect: false,
+                        },
+                        scales: {
+                        x: {
+                            display: true,
+                            title: {
+                            display: true
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                            display: true,
+                            text: 'Value'
+                            },
+                            suggestedMin: -10,
+                            suggestedMax: 200
+                        }
+                        }
+                    },
+                });
+                    
+
+            }
+
         }
 
-        function graphicReforme(){
+
+
+
+        function graphicReforme()
+        {
             document.getElementById('flot-placeholder').replaceChildren();
             document.getElementById('myBar').replaceChildren();
-            document.getElementById('flot-placeholder').style.width = "350px";
-            document.getElementById('flot-placeholder').style.height = "0px";
+            document.getElementById('flot-placeholder').style.width = "500px";
+            document.getElementById('flot-placeholder').style.height = "300px";
+            document.getElementById('myBar').style.height = "250px";
             
 
-            document.getElementById('label').innerHTML = "Nombre de séminaire et formation de l’INFOSEC";
+            document.getElementById('label').innerHTML = "Nombre de séminaire et formation ";
             var cont = document.getElementById('myBar');
 
             var ul = document.createElement('ul');
@@ -1016,8 +1152,79 @@
             }
 
             cont.appendChild(ul);       // add list to the container. */
+
+
+            if(document.getElementById("flot-placeholder"))
+
+            {
+
+                const ctx = document.getElementById('flot-placeholder').getContext('2d');
+                const dataer = {
+                    labels: datas_func[1][0],
+                    datasets: [
+                        {
+                        label: 'INFOSEC',
+                        data: datas_func[1][1],
+                        borderColor: "#cf0610",
+                        fill: false,
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.4
+                        }, {
+                        label: 'Séminaires',
+                        data: datas_func[1][2],
+                        borderColor: "#1b08c9",
+                        fill: false,
+                        tension: 0.4
+                        }, {
+                        label: 'Formations',
+                        data: datas_func[1][2],
+                        borderColor: "#08c945",
+                        fill: false
+                        }
+                    ]
+                };
+                new Chart(ctx, {
+                    type: 'line',
+                    data: dataer,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                        title: {
+                            display: true,
+                            text: 'Nombre de séminaire et formation'
+                        },
+                        },
+                        interaction: {
+                        intersect: false,
+                        },
+                        scales: {
+                        x: {
+                            display: true,
+                            title: {
+                            display: true
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                            display: true,
+                            text: 'Value'
+                            },
+                            suggestedMin: -10,
+                            suggestedMax: 200
+                        }
+                        }
+                    },
+                });
+                    
+
+            }
             
         }
+    
+
+        
+        
         /************************       END    Fonction publique             *********************/
         
 

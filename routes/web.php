@@ -34,9 +34,9 @@ Route::get('/dashboard', 'HomeController@index')->name('home');
 Route::get('/dash/stat','HomeController@stat');
 
 
-Route::get('allgrahics','HomeController@allgrahics')->name('allgrahics');
-Route::get('listSousdomain','HomeController@listSousdomain')->name('listSousdomain');
-
+Route::get('listSousdomain','HomeController@listSousdomain');
+Route::get('auditANDtravail','HomeController@auditANDtravail');
+Route::get('funcANDreform','HomeController@funcANDreform');
 
 
 Route::prefix('create')->group(function(){

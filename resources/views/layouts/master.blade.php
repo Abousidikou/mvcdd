@@ -395,7 +395,7 @@
     <script src="{{asset('template/adminBSB/plugins/morrisjs/morris.js')}}"></script>
 
     <!-- ChartJs -->
-    <script src="{{asset('template/adminBSB/plugins/chartjs/Chart.bundle.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
     <!-- Flot Charts Plugin Js -->
     <script src="{{asset('template/adminBSB/plugins/flot-charts/jquery.flot.js')}}"></script>
