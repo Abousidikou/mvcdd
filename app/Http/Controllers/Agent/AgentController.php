@@ -135,6 +135,7 @@ class AgentController extends Controller
 
     public function update(Request $request)
     {
+        
         $name = $request->name;
         $email = $request->email;
         $structure = $request->structure;
@@ -143,22 +144,23 @@ class AgentController extends Controller
         $cpasswd = $request->cpasswd;
 
         $rules = [
-            'name' => 'unique:users|string|required',
-            'email' => 'unique:users|email|required',
+            'name' => 'string|required',
+            'email' => 'email|required',
             'structure' => 'required|integer',
             'role' => 'required|string',
             'passwd' => 'required',
         ];
 
-
+        
         $validator = Validator::make($request->all(), $rules);
-
+        
         if($validator->fails())
         {
             return redirect()->back()->with('validation','error');
         }
         else
         {
+      
             $updateArray = [];
             if(!empty($passwd)&&$passwd!=NULL&& trim($passwd)!="")
             {

@@ -46,7 +46,7 @@
 
                 <div class="icon">
 
-                    <i class="material-icons">playlist_add_check</i>
+                    ="material-icons">playlist_add_check</i><i class
 
                 </div>
 

@@ -57,6 +57,17 @@
                         Une erreur s'est produite au cours de la modification... Veuillez rééssayer.
 
                     </div>
+                @elseif(session('validation'))
+
+                        <div class="alert bg-danger alert-dismissible" role="alert">
+
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                            Erreur de validation... Il se peut que l'agent existe déjà. <br>
+
+                            Veuillez rééssayer.
+
+                        </div>
 
                 @endif 
 

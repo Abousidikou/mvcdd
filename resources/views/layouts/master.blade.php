@@ -219,73 +219,94 @@
                 @else
 
                     @if(Auth::user()->role=="admin")
-                            <em><i>| ADMIN |</i></em>
-                        <a href="{{route('domains')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                GESTION DES DOMAINES
-                            </p>
-                        </a>
-
-                        <a href="{{route('subdomains')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                GESTION DES SOUS-DOMAINES
-                            </p>
-                        </a>
-
-                        <a href="{{route('structures')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                GESTION DES STRUCTURES
-                            </p>
-                        </a>
-
-                        <a href="{{route('agents')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                GESTION DES UTILISATEURS
-                            </p>
-                        </a>
-                        
-                        <a href="{{route('indicators')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                GESTION DES INDICATEURS
-                            </p>
-                        </a>
-
-
-                        <a href="{{route('levels')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                GESTION DES NIVEAUX DE DESAGREGATION
-                            </p>
-                        </a>
-
-                        <a href="{{route('infos')}}" class="list-group-item">
-                                <p class="list-group-item-text">
-                                    GESTION DES INFORMATIONS STATISTIQUES
+                    <div class="dropdown">
+                        <a href="#" class="list-group-item btn btn-secondary dropdown-toggle"  role="button" id="dropdownMenuLinkAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <p class="list-group-item-text" style="font-size: larger;">
+                                  Admin<i class="material-icons">arrow_drop_down</i>
                                 </p>
                         </a>
-                            <em><i>| FORMATION |</i></em>
 
-                        <a href="{{route('agentFormation.data')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                GESTION DES PLANS DE FORMATION
-                            </p>
-                        </a>
-                        <a href="{{route('miseEnStage.data')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                GESTION DES MISES EN STAGE
-                            </p>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a href="{{route('domains')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    GESTION DES DOMAINES
+                                </p>
+                            </a>
+
+                            <a href="{{route('subdomains')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    GESTION DES SOUS-DOMAINES
+                                </p>
+                            </a>
+
+                            <a href="{{route('structures')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    GESTION DES STRUCTURES
+                                </p>
+                            </a>
+
+                            <a href="{{route('agents')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    GESTION DES UTILISATEURS
+                                </p>
+                            </a>
+                            
+                            <a href="{{route('indicators')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    GESTION DES INDICATEURS
+                                </p>
+                            </a>
+
+
+                            <a href="{{route('levels')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    GESTION DES NIVEAUX DE DESAGREGATION
+                                </p>
+                            </a>
+
+                            <a href="{{route('infos')}}" class="list-group-item">
+                                    <p class="list-group-item-text">
+                                        GESTION DES INFORMATIONS STATISTIQUES
+                                    </p>
+                            </a>
+                        </div>
+                    </div>
+                    <br><br><br>
+                    <div class="dropdown">
+                        <a href="#" class="list-group-item btn btn-secondary dropdown-toggle"  role="button" id="dropdownMenuLinkFormation" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <p class="list-group-item-text" style="font-size: larger;">
+                                  Formation<i class="material-icons">arrow_drop_down</i>
+                                </p>
                         </a>
 
-                        <a href="{{route('retourDeStage.data')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                GESTION DES RETOURS DE STAGE
-                            </p>
-                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a href="{{route('agentFormation.data')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    GESTION DES PLANS DE FORMATION
+                                </p>
+                            </a>
+                            <a href="{{route('miseEnStage.data')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    GESTION DES MISES EN STAGE
+                                </p>
+                            </a>
 
-                        <a href="{{route('aggregat.index')}}" class="list-group-item">
-                            <p class="list-group-item-text">
-                                EXPORTER LES AGREGATS
-                            </p>
-                        </a>
+                            <a href="{{route('retourDeStage.data')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    GESTION DES RETOURS DE STAGE
+                                </p>
+                            </a>
+
+                            <a href="{{route('aggregat.index')}}" class="list-group-item">
+                                <p class="list-group-item-text">
+                                    EXPORTER LES AGREGATS
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+                        
+
+
 
 
                     @elseif(Auth::user()->role=="agents_m" || Auth::user()->role == "agents_gen")
@@ -434,6 +455,8 @@
 
     <!-- Custom local Dev Js -->
     <script>
+
+  
         jQuery(document).ready(function($) {
                 $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="_token"]').attr('content') }
