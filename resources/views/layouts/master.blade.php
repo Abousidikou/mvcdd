@@ -304,11 +304,6 @@
                             </a>
                         </div>
                     </div>
-                        
-
-
-
-
                     @elseif(Auth::user()->role=="agents_m" || Auth::user()->role == "agents_gen")
                         <a href="{{route('agentFormation.data')}}" class="list-group-item">
                             <p class="list-group-item-text">
