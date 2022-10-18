@@ -87,31 +87,8 @@ class HomeController extends Controller
             $info->date_end = date_format(date_create($info->date_end),'d-m-Y');
         }
 
-        $audit = [];
-        $indicators = Indicators::all();
-        foreach ($indicators as  $line) {
-
-            if($line->subdomain->domain->id == 10){
-                $dataExist = Data::where('id_indicator',$line->id)->first();
-                if($dataExist != null){
-                    if(array_key_exists($line->subdomain->wording,$audit)){
-                        $audit[$line->subdomain->wording][0] += 1; 
-                        $audit[$line->subdomain->wording][1] += 1; 
-                    }else{
-                        $audit[$line->subdomain->wording] = [1,1];
-                    }
-                }else{
-                    if(array_key_exists($line->subdomain->wording,$audit)){
-                        $audit[$line->subdomain->wording][1] += 1; 
-                    }else{
-                        $audit[$line->subdomain->wording] = [0,1];
-                    }
-                }
-            }
-        }
-
-        $audit_graph = $this->graphic(10,188,1383,1957,1958);
-        return view('index',compact('audit_graph','audit','numberOfIndicators','numberOfTypes','numberOfLevels','numberOfData','dataStatArray','infos'));
+        
+        return view('index',compact('numberOfIndicators','numberOfTypes','numberOfLevels','numberOfData','dataStatArray','infos'));
     }
 
     public function redirect() 
@@ -165,7 +142,7 @@ class HomeController extends Controller
 
     public function auditANDtravail(){
         $dataToSend = [];
-        $audit = $this->graphic(10,188,1383,1957,1958);
+        $audit = $this->graphic(13,240,2012,2013,2014);
         $reform = $this->graphic(12,233,1397,903,904);
         
         $dataToSend[] = $audit;

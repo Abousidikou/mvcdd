@@ -697,7 +697,7 @@
                 {
                     datas_audit = JSON.parse(response);
                     document.getElementById('flot-placeholder').replaceChildren();
-                    document.getElementById('label').innerHTML = "Evolution du nombre de plaintes";
+                    document.getElementById('label').innerHTML = "Nombre d'usagers/clients ayant adressé une requête ou plainte au MTFP";
                     console.log('audit and travail : ',datas_audit);
                     
                     if(document.getElementById("flot-placeholder"))
@@ -709,20 +709,20 @@
                             labels: datas_audit[0][0],
                             datasets: [
                                 {
-                                label: 'Structures du Ministère',
+                                label: 'Plaintes en cours',
                                 data: datas_audit[0][1],
                                 borderColor: "#cf0610",
                                 fill: false,
                                 cubicInterpolationMode: 'monotone',
                                 tension: 0.4
                                 }, {
-                                label: 'Individuelles',
+                                label: 'Plaintes traitées',
                                 data: datas_audit[0][2],
                                 borderColor: "#1b08c9",
                                 fill: false,
                                 tension: 0.4
                                 }, {
-                                label: 'Collectives',
+                                label: 'Plaintes traitées',
                                 data: datas_audit[0][2],
                                 borderColor: "#08c945",
                                 fill: false
@@ -735,30 +735,30 @@
                             options: {
                                 responsive: true,
                                 plugins: {
-                                title: {
-                                    display: true,
-                                    text: 'Evolution du nombre de plaintes'
-                                },
+                                    title: {
+                                        display: true,
+                                        text: 'Nombre d\'usagers/clients ayant adressé une requête ou plainte au MTFP'
+                                    },
                                 },
                                 interaction: {
-                                intersect: false,
+                                    intersect: false,
                                 },
                                 scales: {
-                                x: {
-                                    display: true,
-                                    title: {
-                                    display: true
-                                    }
-                                },
-                                y: {
-                                    display: true,
-                                    title: {
-                                    display: true,
-                                    text: 'Value'
+                                    x: {
+                                        display: true,
+                                        title: {
+                                        display: true
+                                        }
                                     },
-                                    suggestedMin: -10,
-                                    suggestedMax: 200
-                                }
+                                    y: {
+                                        display: true,
+                                        title: {
+                                        display: true,
+                                        text: 'Value'
+                                        },
+                                        suggestedMin: -10,
+                                        suggestedMax: 200
+                                    }
                                 }
                             },
                         });
@@ -873,58 +873,58 @@
                 const dataer = {
                     labels: datas_audit[0][0],
                     datasets: [
-                        {
-                        label: 'Structures du Ministère',
-                        data: datas_audit[0][1],
-                        borderColor: "#cf0610",
-                        fill: false,
-                        cubicInterpolationMode: 'monotone',
-                        tension: 0.4
-                        }, {
-                        label: 'Individuelles',
-                        data: datas_audit[0][2],
-                        borderColor: "#1b08c9",
-                        fill: false,
-                        tension: 0.4
-                        }, {
-                        label: 'Collectives',
-                        data: datas_audit[0][2],
-                        borderColor: "#08c945",
-                        fill: false
-                        }
-                    ]
-                };
-                new Chart(ctx, {
-                    type: 'line',
-                    data: dataer,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                        title: {
-                            display: true,
-                            text: 'Evolution du nombre de plaintes'
-                        },
-                        },
-                        interaction: {
-                        intersect: false,
-                        },
-                        scales: {
-                        x: {
-                            display: true,
-                            title: {
-                            display: true
+                            {
+                            label: 'Plaintes en cours',
+                            data: datas_audit[0][1],
+                            borderColor: "#cf0610",
+                            fill: false,
+                            cubicInterpolationMode: 'monotone',
+                            tension: 0.4
+                            }, {
+                            label: 'Plaintes traitées',
+                            data: datas_audit[0][2],
+                            borderColor: "#1b08c9",
+                            fill: false,
+                            tension: 0.4
+                            }, {
+                            label: 'Plaintes traitées',
+                            data: datas_audit[0][2],
+                            borderColor: "#08c945",
+                            fill: false
                             }
-                        },
-                        y: {
-                            display: true,
-                            title: {
-                            display: true,
-                            text: 'Value'
+                        ]
+                    };
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: dataer,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Nombre d\'usagers/clients ayant adressé une requête ou plainte au MTFP'
+                                },
                             },
-                            suggestedMin: -10,
-                            suggestedMax: 200
-                        }
-                        }
+                            interaction: {
+                                intersect: false,
+                            },
+                            scales: {
+                                x: {
+                                    display: true,
+                                    title: {
+                                    display: true
+                                    }
+                                },
+                                y: {
+                                    display: true,
+                                    title: {
+                                    display: true,
+                                    text: 'Value'
+                                    },
+                                    suggestedMin: -10,
+                                    suggestedMax: 200
+                                }
+                            }
                     },
                 });
                     
