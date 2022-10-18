@@ -698,7 +698,7 @@
                     datas_audit = JSON.parse(response);
                     document.getElementById('flot-placeholder').replaceChildren();
                     document.getElementById('label').innerHTML = "Nombre d'usagers/clients ayant adressé une requête ou plainte au MTFP";
-                    console.log('audit and travail : ',datas_audit);
+                    //console.log('audit and travail : ',datas_audit);
                     
                     if(document.getElementById("flot-placeholder"))
 
@@ -800,7 +800,7 @@
                     document.getElementById('flot-placeholder').replaceChildren();
                     document.getElementById('flot-placeholder').style.width = "500px";
                     document.getElementById('flot-placeholder').style.height = "300px";
-                    console.log('func and reform : ',datas_func);
+                    //console.log('func and reform : ',datas_func);
                     
 
                 },
