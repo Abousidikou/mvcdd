@@ -1,102 +1,76 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <title>Laravel</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <title>Compte!</title>
+    <style>
+        .content {
+        max-width: 500px;
+        margin: auto;
+        }
+    </style>
+  </head>
+  <body  style="background-color: #e3e8e5 ;">
+  
+    <div class="row content" style="text-align:center;">
+        <div class="col-lg-12">
+            <div class="card card-default">
+                <div class="card-header justify-content-between card-header-border-bottom">
+                    <h2>Cadre de Vie </h2>
+                </div>
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+                <div class="card-body">
+                    <p class="mb-5">Charger le fichier </p>
 
-            .full-height {
-                height: 100vh;
-            }
+                    <h1 class="mb-2 text-dark">Types 
+                        <span class="badge badge-secondary ">xlsx-xlx</span>
+                    </h1>
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+                    <form id="form_advanced_validation" method="POST"
+                        action="{{ route('postcdv') }}" enctype="multipart/form-data">
 
-            .position-ref {
-                position: relative;
-            }
+                        {{ csrf_field() }}
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
 
-            .content {
-                text-align: center;
-            }
 
-            .title {
-                font-size: 84px;
-            }
+                        <div class="form-group form-float">
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
+                            <div class="form-line">
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="perf_div"></div>
-        
-        @columnchart('Finances', 'perf_div')
+                                <input type="file" class="form-control" name="importfile" required>
 
-        <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
-        
-    </body>
-    
-    <script type="text/javascript" src="{{('js/gcharts/loader.js')}}"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
+                                {{-- <label class="form-label">Dataset Name</label> --}}
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses', 'Profit'],
-          ['2014', 1000, 400, 200],
-          ['2015', 1170, 460, 250],
-          ['2016', 660, 1120, 300],
-          ['2017', 1030, 540, 350]
-        ]);
+                            </div>
 
-        var options = {
-          chart: {
-            title: 'Company Performance',
-            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          }
-        };
+                            <div class="help-info"></div>
 
-        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+                        </div>
+                        <button class="btn btn-primary waves-effect" type="submit">IMPORTER</button>
+                        @if(session("path"))
 
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
-    </script>
+                            @php
+                                
+                                $path = session('path');
+                                
+                            @endphp
+
+                            <a href="{{ url($path) }}" class="btn btn-secondary waves-effect">Telecharger le fichier</a>
+
+                        @endif
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
 </html>

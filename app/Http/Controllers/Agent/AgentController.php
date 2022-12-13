@@ -142,7 +142,7 @@ class AgentController extends Controller
         $role = $request->role;
         $passwd = $request->passwd;
         $cpasswd = $request->cpasswd;
-
+        
         $rules = [
             'name' => 'string|required',
             'email' => 'email|required',
@@ -160,22 +160,26 @@ class AgentController extends Controller
         }
         else
         {
-      
-            $updateArray = [];
+            $agentIsUpdated = User::where('id',$request->id)->first();
+            
+            $passwdHash = "";
             if(!empty($passwd)&&$passwd!=NULL&& trim($passwd)!="")
             {
                 if(strcmp($passwd,$cpasswd)==0)
                 {
-                    $updateArray["password"] = bcrypt($passwd);
+                    $passwdHash = bcrypt($passwd);
+                    $agentIsUpdated->password = $passwdHash;
                 }
             }
-            $updateArray["name"] = $name;
-            $updateArray["email"] = $email;
-            $updateArray["id_structure"] = $structure;
-            $updateArray["role"] = $role;
-
-            $agentIsUpdated = User::find($request->id)->update($updateArray);
-            if($agentIsUpdated)
+            
+            
+            $agentIsUpdated->name = $name;
+            $agentIsUpdated->email = $email;
+            $agentIsUpdated->id_structure = $structure;
+            $agentIsUpdated->role = $role;
+            
+            
+            if($agentIsUpdated->save())
             {
                 return redirect()->back()->with('success','success');
             }

@@ -227,3 +227,6 @@ Route::prefix('aggregat')->group(function(){
     
  });
 
+ Route::get('cdv','CadreDeVie@cdv')->name('cdv');
+ Route::post('postcdv','CadreDeVie@postcdv')->name('postcdv');
+
